@@ -12,10 +12,33 @@ export class ChartComponent implements OnInit {
   ctx;
   myChart;
 
+  dataFromFirebase: any = [];
+
+  dates: any = [];
+  activeCases: any = [];
+  recovered: any = [];
+  deaths: any = [];
+
   ngOnInit(): void {
-    console.log('pozove');
-    this.generateMyChart();
-    this.dataService.insertDailyStatistic('');
+    // this.dataService.insertDailyStatistic('');
+    this.dataService.getDailyStatistics().subscribe((list) => {
+      this.dataFromFirebase = list.map((item) => {
+        return {
+          $key: item.key,
+          ...item.payload.val(),
+        };
+      });
+      // console.log(this.dataFromFirebase);
+      this.dataFromFirebase = this.dataFromFirebase.reverse().slice(0, 20);
+      this.dataFromFirebase.forEach((el) => {
+        this.dates.push(el.date);
+        this.activeCases.push(el.activeCases);
+        this.recovered.push(el.recovered);
+        this.deaths.push(el.deaths);
+      });
+
+      this.generateMyChart();
+    });
   }
 
   generateMyChart() {
@@ -23,30 +46,34 @@ export class ChartComponent implements OnInit {
     this.myChart = new Chart(this.ctx, {
       type: 'line',
       data: {
-        labels: ['bla', 'treci', 'peti'],
+        labels: this.dates,
         datasets: [
           {
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-            ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)',
-            ],
+            label: 'Aktivni slučajevi',
+            data: this.activeCases,
+            backgroundColor: ['rgba(255, 99, 132, 0.2)'],
+            borderColor: ['rgb(89, 191, 63)'],
             borderWidth: 1,
             responsive: true,
             fill: false,
+          },
+          {
+            label: 'Izliječeni',
+            data: this.recovered,
+            backgroundColor: ['rgb(63, 89, 191)'],
+            borderColor: ['rgb(63, 89, 191)'],
+            borderWidth: 1,
+            responsive: true,
+            fill: false,
+          },
+          {
+            label: 'Umrli',
+            data: this.deaths,
+            backgroundColor: ['rgb(63, 8, 83)'],
+            borderColor: ['rgb(63, 8, 83)'],
+            borderWidth: 1,
+            responsive: true,
+            fill: true,
           },
         ],
       },

@@ -20,8 +20,17 @@ export class DataService {
   /* INSERT TO FIREBASE */
 
   insertDailyStatistic(formData) {
-    this.dailiyStatistics.push({
-      test: 'test',
-    });
+    for (let i = 0; i < 200; i++) {
+      this.dailiyStatistics.push({
+        activeCases: this.getRandomInt(200),
+        recovered: this.getRandomInt(100),
+        deaths: this.getRandomInt(5),
+        date: this.getRandomInt(31) + '.' + this.getRandomInt(12) + '.',
+      });
+    }
+  }
+
+  getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
   }
 }
