@@ -23,6 +23,7 @@ export class ChartComponent implements OnInit {
     // this.dataService.insertDailyStatistic('');
 
     // this.dataService.collectedData();
+
     this.dataService.getDailyStatistics().subscribe((list) => {
       this.dataFromFirebase = list.map((item) => {
         return {
@@ -30,8 +31,14 @@ export class ChartComponent implements OnInit {
           ...item.payload.val(),
         };
       });
+
+      this.dates = [];
+      this.activeCases = [];
+      this.recovered = [];
+      this.deaths = [];
+
       this.dataFromFirebase.forEach((el) => {
-        this.dates.push(el.date);
+        this.dates.push(el.date.substring(0, 5));
         this.activeCases.push(el.activeCases);
         this.recovered.push(el.recovered);
         this.deaths.push(el.deaths);
@@ -45,13 +52,14 @@ export class ChartComponent implements OnInit {
     this.ctx = <HTMLCanvasElement>document.getElementById('myChart');
     this.myChart = new Chart(this.ctx, {
       type: 'line',
+      responsive: true,
       data: {
         labels: this.dates,
         datasets: [
           {
             label: 'Aktivni slučajevi',
             data: this.activeCases,
-            backgroundColor: ['rgba(255, 99, 132, 0.2)'],
+            backgroundColor: ['rgba(255, 99, 132, 0.4)'],
             borderColor: ['rgb(89, 191, 63)'],
             borderWidth: 1,
             responsive: true,
@@ -60,20 +68,20 @@ export class ChartComponent implements OnInit {
           {
             label: 'Izliječeni',
             data: this.recovered,
-            backgroundColor: ['rgb(63, 89, 191)'],
-            borderColor: ['rgb(63, 89, 191)'],
+            backgroundColor: ['rgb(50, 168, 127, 0.2)'],
+            borderColor: ['rgb(50, 168, 127)'],
             borderWidth: 1,
             responsive: true,
-            fill: false,
+            fill: true,
           },
           {
             label: 'Umrli',
             data: this.deaths,
-            backgroundColor: ['rgb(63, 8, 83)'],
+            backgroundColor: ['rgb(63, 8, 83, 0.2)'],
             borderColor: ['rgb(63, 8, 83)'],
             borderWidth: 1,
             responsive: true,
-            fill: false,
+            fill: true,
           },
         ],
       },
@@ -83,11 +91,25 @@ export class ChartComponent implements OnInit {
             {
               ticks: {
                 beginAtZero: true,
+                stacked: true,
               },
             },
           ],
         },
+        animation: {
+          duration: 2000,
+        },
       },
     });
+  }
+
+  filterByMonth() {
+    this.dataFromFirebase.forEach((element) => {
+      console.log(element.date.substring(3, 10));
+    });
+
+    this.dataFromFirebase = this.dataFromFirebase.filter(
+      (item) => item.date.substring(3, 10) === '06.2020'
+    );
   }
 }
