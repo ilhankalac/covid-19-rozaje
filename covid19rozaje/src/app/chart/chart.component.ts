@@ -20,7 +20,7 @@ export class ChartComponent implements OnInit {
     this.myChart = new Chart(this.ctx, {
       type: 'bar',
       data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: ['bla', 'treci', 'peti'],
         datasets: [
           {
             label: '# of Votes',
