@@ -21,6 +21,8 @@ export class ChartComponent implements OnInit {
 
   ngOnInit(): void {
     // this.dataService.insertDailyStatistic('');
+
+    // this.dataService.collectedData();
     this.dataService.getDailyStatistics().subscribe((list) => {
       this.dataFromFirebase = list.map((item) => {
         return {
@@ -28,8 +30,6 @@ export class ChartComponent implements OnInit {
           ...item.payload.val(),
         };
       });
-      // console.log(this.dataFromFirebase);
-      this.dataFromFirebase = this.dataFromFirebase.reverse().slice(0, 20);
       this.dataFromFirebase.forEach((el) => {
         this.dates.push(el.date);
         this.activeCases.push(el.activeCases);
@@ -55,7 +55,7 @@ export class ChartComponent implements OnInit {
             borderColor: ['rgb(89, 191, 63)'],
             borderWidth: 1,
             responsive: true,
-            fill: false,
+            fill: true,
           },
           {
             label: 'Izliječeni',
@@ -73,7 +73,7 @@ export class ChartComponent implements OnInit {
             borderColor: ['rgb(63, 8, 83)'],
             borderWidth: 1,
             responsive: true,
-            fill: true,
+            fill: false,
           },
         ],
       },
