@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-chart',
@@ -7,18 +8,20 @@ import Chart from 'chart.js';
   styleUrls: ['./chart.component.css'],
 })
 export class ChartComponent implements OnInit {
-  constructor() {}
+  constructor(private dataService: DataService) {}
   ctx;
   myChart;
 
   ngOnInit(): void {
+    console.log('pozove');
     this.generateMyChart();
+    this.dataService.insertDailyStatistic('');
   }
 
   generateMyChart() {
     this.ctx = <HTMLCanvasElement>document.getElementById('myChart');
     this.myChart = new Chart(this.ctx, {
-      type: 'bar',
+      type: 'line',
       data: {
         labels: ['bla', 'treci', 'peti'],
         datasets: [
@@ -42,6 +45,8 @@ export class ChartComponent implements OnInit {
               'rgba(255, 159, 64, 1)',
             ],
             borderWidth: 1,
+            responsive: true,
+            fill: false,
           },
         ],
       },
