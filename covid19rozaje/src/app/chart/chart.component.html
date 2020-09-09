@@ -2,6 +2,17 @@
   class="chart-container"
   style="position: relative; height: 40vh; width: 80vw"
 >
-  <button (click)="filterByMonth()">djesi</button>
-  <canvas id="myChart"></canvas>
+  <div>
+    <mat-form-field>
+      <mat-label>Period</mat-label>
+      <mat-select (selectionChange)="filterByMonth($event)">
+        <mat-option value="Sve"> Sve </mat-option>
+
+        <mat-option *ngFor="let months of monthsAvailable" [value]="months">
+          {{ months }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <canvas id="myChart" style="margin: 0 auto"></canvas>
 </div>

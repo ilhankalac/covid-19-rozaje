@@ -20,10 +20,6 @@ export class ChartComponent implements OnInit {
   deaths: any = [];
 
   ngOnInit(): void {
-    // this.dataService.insertDailyStatistic('');
-
-    // this.dataService.collectedData();
-
     this.dataService.getDailyStatistics().subscribe((list) => {
       this.dataFromFirebase = list.map((item) => {
         return {
@@ -32,19 +28,7 @@ export class ChartComponent implements OnInit {
         };
       });
 
-      this.dates = [];
-      this.activeCases = [];
-      this.recovered = [];
-      this.deaths = [];
-
-      this.dataFromFirebase.forEach((el) => {
-        this.dates.push(el.date.substring(0, 5));
-        this.activeCases.push(el.activeCases);
-        this.recovered.push(el.recovered);
-        this.deaths.push(el.deaths);
-      });
-
-      this.generateMyChart();
+      this.generatingDataToLabels();
     });
   }
 
@@ -66,7 +50,7 @@ export class ChartComponent implements OnInit {
             fill: true,
           },
           {
-            label: 'Izliječeni',
+            label: 'Oporavljeni',
             data: this.recovered,
             backgroundColor: ['rgb(50, 168, 127, 0.2)'],
             borderColor: ['rgb(50, 168, 127)'],
@@ -97,19 +81,51 @@ export class ChartComponent implements OnInit {
           ],
         },
         animation: {
-          duration: 2000,
+          duration: 2500,
         },
       },
     });
   }
 
-  filterByMonth() {
-    this.dataFromFirebase.forEach((element) => {
-      console.log(element.date.substring(3, 10));
+  tempData: any = [];
+  filterByMonth(event) {
+    this.tempData = this.dataFromFirebase;
+    if (event.source.value !== 'Sve') {
+      this.dataFromFirebase = this.dataFromFirebase.filter(
+        (item) => item.date.substring(3, 11) === event.source.value
+      );
+      this.generatingDataToLabels();
+    }
+    this.generatingDataToLabels();
+    this.dataFromFirebase = this.tempData;
+  }
+
+  generatingDataToLabels() {
+    this.dates = [];
+    this.activeCases = [];
+    this.recovered = [];
+    this.deaths = [];
+
+    this.dataFromFirebase.forEach((el) => {
+      this.dates.push(el.date.substring(0, 5));
+      this.activeCases.push(el.activeCases);
+      this.recovered.push(el.recovered);
+      this.deaths.push(el.deaths);
+    });
+    this.generateMyChart();
+    this.existingMonths();
+  }
+
+  monthsAvailable: any = [];
+
+  existingMonths() {
+    this.dataFromFirebase.forEach((el) => {
+      this.monthsAvailable.push(el.date.substring(3, 11));
     });
 
-    this.dataFromFirebase = this.dataFromFirebase.filter(
-      (item) => item.date.substring(3, 10) === '06.2020'
+    //ALL MONTHS THAT HAVE THE DATA, array distinction
+    this.monthsAvailable = this.monthsAvailable.filter(
+      (n, i) => this.monthsAvailable.indexOf(n) === i
     );
   }
 }
