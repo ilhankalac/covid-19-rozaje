@@ -30,29 +30,27 @@
     matSortDirection="asc"
   >
     <ng-container matColumnDef="Date">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>
-        Index
-      </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef> Datum </mat-header-cell>
       <mat-cell *matCellDef="let element; let i = index">
         <b style="font-size: smaller">{{ element?.date }} </b>
       </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="Active">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>
-        Aktivni slučajevi
+    <ng-container matColumnDef="activeCases">
+      <mat-header-cell *matHeaderCellDef mat-sort-header style="color: red">
+        <b> Aktivni slučajevi </b>
       </mat-header-cell>
       <mat-cell *matCellDef="let element">{{ element?.activeCases }}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="Recovered">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>
-        Oporavljeni
+    <ng-container matColumnDef="recovered">
+      <mat-header-cell *matHeaderCellDef mat-sort-header style="color: green">
+        <b> Oporavljeni </b>
       </mat-header-cell>
       <mat-cell *matCellDef="let element">{{ element?.recovered }}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="Deaths">
+    <ng-container matColumnDef="deaths">
       <mat-header-cell *matHeaderCellDef mat-sort-header>
         Umrli
       </mat-header-cell>
@@ -67,8 +65,8 @@
     ></mat-row>
   </mat-table>
   <mat-paginator
-    [pageSizeOptions]="[10, 25, 50, 100]"
-    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    [pageSize]="5"
     showFirstLastButtons
   ></mat-paginator>
   <mat-card

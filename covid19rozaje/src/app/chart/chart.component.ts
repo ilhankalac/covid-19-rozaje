@@ -27,8 +27,9 @@ export class ChartComponent implements OnInit {
           ...item.payload.val(),
         };
       });
-
       this.generatingDataToLabels();
+      this.generateMyChart();
+      this.existingMonths();
     });
   }
 
@@ -92,13 +93,26 @@ export class ChartComponent implements OnInit {
   tempData: any = [];
   filterByMonth(event) {
     this.tempData = this.dataFromFirebase;
+
     if (event.source.value !== 'Sve') {
       this.dataFromFirebase = this.dataFromFirebase.filter(
         (item) => item.date.substring(3, 11) === event.source.value
       );
       this.generatingDataToLabels();
+
+      this.myChart.data.labels = this.dates;
+      this.myChart.data.datasets[0].data = this.activeCases;
+      this.myChart.data.datasets[1].data = this.recovered;
+      this.myChart.data.datasets[2].data = this.deaths;
+    } else {
+      this.generatingDataToLabels();
+
+      this.myChart.data.labels = this.dates;
+      this.myChart.data.datasets[0].data = this.activeCases;
+      this.myChart.data.datasets[1].data = this.recovered;
+      this.myChart.data.datasets[2].data = this.deaths;
     }
-    this.generatingDataToLabels();
+    this.myChart.update();
     this.dataFromFirebase = this.tempData;
   }
 
@@ -114,8 +128,6 @@ export class ChartComponent implements OnInit {
       this.recovered.push(el.recovered);
       this.deaths.push(el.deaths);
     });
-    this.generateMyChart();
-    this.existingMonths();
   }
 
   monthsAvailable: any = [];

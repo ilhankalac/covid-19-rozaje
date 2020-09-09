@@ -15,7 +15,7 @@ export class TableComponent implements OnInit {
   searchText: string = '';
   listData: MatTableDataSource<any>;
   isLoading = true;
-  displayedColumns: string[] = ['Date', 'Active', 'Recovered', 'Deaths'];
+  displayedColumns: string[] = ['Date', 'activeCases', 'recovered', 'deaths'];
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) matSort: MatSort;

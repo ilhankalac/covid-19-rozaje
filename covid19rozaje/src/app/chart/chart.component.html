@@ -2,7 +2,7 @@
   class="chart-container"
   style="position: relative; height: 40vh; width: 80vw"
 >
-  <div>
+  <div style="text-align: center">
     <mat-form-field>
       <mat-label>Period</mat-label>
       <mat-select (selectionChange)="filterByMonth($event)">
@@ -15,28 +15,15 @@
     </mat-form-field>
   </div>
   <canvas id="myChart" style="margin: 0 auto"></canvas>
+
+  <!-- <div>
+    date <input type="text" #Date /> active
+    <input type="text" #Active /> recovered
+    <input type="text" #Recovered /> deaths <input type="text" #Deaths />
+    <button (click)="insertNewData()">djesi</button>
+  </div> -->
+  <br />
+  <app-table></app-table>
+
+  <p style="text-align: center"><b> Autor: Kalač Ilhan</b></p>
 </div>
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<app-table></app-table>

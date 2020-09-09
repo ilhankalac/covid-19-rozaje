@@ -32,7 +32,7 @@ export class DataService {
     return Math.floor(Math.random() * Math.floor(max));
   }
 
-  collectedData() {
+  /*collectedData() {
     //TO 8 TH SEPTEMBER
 
     this.dailyStatistics.push({
@@ -562,5 +562,5 @@ export class DataService {
       deaths: 14,
       date: '08.09.2020.',
     });
-  }
+  } */
 }
