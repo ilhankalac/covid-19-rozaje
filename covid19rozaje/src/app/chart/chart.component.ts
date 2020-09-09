@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import Chart from 'chart.js';
 import { DataService } from '../data.service';
 
@@ -56,7 +56,8 @@ export class ChartComponent implements OnInit {
             borderColor: ['rgb(50, 168, 127)'],
             borderWidth: 1,
             responsive: true,
-            fill: true,
+            fill: false,
+            pointRadius: 0,
           },
           {
             label: 'Umrli',
@@ -66,6 +67,7 @@ export class ChartComponent implements OnInit {
             borderWidth: 1,
             responsive: true,
             fill: true,
+            pointRadius: 2,
           },
         ],
       },
@@ -127,5 +129,27 @@ export class ChartComponent implements OnInit {
     this.monthsAvailable = this.monthsAvailable.filter(
       (n, i) => this.monthsAvailable.indexOf(n) === i
     );
+  }
+
+  /* INPUTING THE DATA */
+  @ViewChild('Date', { static: true }) inputDate: any;
+  @ViewChild('Active', { static: true }) inputActive: any;
+  @ViewChild('Recovered', { static: true }) inputRecovered: any;
+  @ViewChild('Deaths', { static: true }) inputDeaths: any;
+
+  insertNewData() {
+    let data: {
+      date: string;
+      activeCases: string;
+      recovered: string;
+      deaths: string;
+    } = {
+      date: this.inputDate.nativeElement.value,
+      activeCases: this.inputActive.nativeElement.value,
+      recovered: this.inputRecovered.nativeElement.value,
+      deaths: this.inputDeaths.nativeElement.value,
+    };
+
+    this.dataService.insertDailyStatistic(data);
   }
 }

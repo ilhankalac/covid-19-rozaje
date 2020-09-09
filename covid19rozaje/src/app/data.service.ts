@@ -19,13 +19,13 @@ export class DataService {
 
   /* INSERT TO FIREBASE */
 
-  insertDailyStatistic() {
-    // this.dailyStatistics.push({
-    //   activeCases: this.getRandomInt(200),
-    //   recovered: this.getRandomInt(100),
-    //   deaths: this.getRandomInt(5),
-    //   date: this.getRandomInt(31) + '.' + this.getRandomInt(12) + '.',
-    // });
+  insertDailyStatistic(data) {
+    this.dailyStatistics.push({
+      activeCases: data.activeCases,
+      recovered: data.recovered,
+      deaths: data.deaths,
+      date: data.date,
+    });
   }
 
   getRandomInt(max) {

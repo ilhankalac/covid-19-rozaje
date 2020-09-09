@@ -1,0 +1,81 @@
+<div class="mat-elevation-z14 table" style="margin: 2%">
+  <h2 style="text-align: center">Tabelarni prikaz</h2>
+  <div fxLayout="row">
+    <div style="width: 100% !important; margin: 1%">
+      <mat-form-field class="search-form-field" style="width: 100% !important">
+        <input
+          matInput
+          [(ngModel)]="searchKey"
+          placeholder="Pretraga"
+          autocomplete="off"
+          (keyup)="applyFilter()"
+        />
+        <button
+          mat-button
+          *ngIf="searchKey"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="searchKey = ''; applyFilter()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+  </div>
+  <mat-table
+    [dataSource]="listData"
+    matSort
+    matSortActive="Name"
+    matSortDirection="asc"
+  >
+    <ng-container matColumnDef="Date">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Index
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element; let i = index">
+        <b style="font-size: smaller">{{ element?.date }} </b>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Active">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Aktivni slučajevi
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element">{{ element?.activeCases }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Recovered">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Oporavljeni
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element">{{ element?.recovered }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Deaths">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Umrli
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element">{{ element?.deaths }}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row
+      *matRowDef="let row; columns: displayedColumns"
+      style="cursor: pointer"
+      (click)="onSelectedRow(row.$key, $event)"
+    ></mat-row>
+  </mat-table>
+  <mat-paginator
+    [pageSizeOptions]="[10, 25, 50, 100]"
+    [pageSize]="10"
+    showFirstLastButtons
+  ></mat-paginator>
+  <mat-card
+    *ngIf="isLoading"
+    style="display: flex; justify-content: center; align-items: center"
+  >
+    <mat-progress-spinner color="primary" mode="indeterminate">
+    </mat-progress-spinner>
+  </mat-card>
+</div>
