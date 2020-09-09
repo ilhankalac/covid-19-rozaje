@@ -8,7 +8,13 @@ import { DataService } from '../data.service';
   styleUrls: ['./chart.component.css'],
 })
 export class ChartComponent implements OnInit {
-  constructor(private dataService: DataService) {}
+  today = new Date();
+  public now: Date = new Date();
+  constructor(private dataService: DataService) {
+    setInterval(() => {
+      this.now = new Date();
+    }, 1);
+  }
   ctx;
   myChart;
 
@@ -79,6 +85,9 @@ export class ChartComponent implements OnInit {
               ticks: {
                 beginAtZero: true,
                 stacked: true,
+              },
+              gridLines: {
+                display: false,
               },
             },
           ],

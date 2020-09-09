@@ -1,5 +1,7 @@
 <div class="mat-elevation-z14 table" style="margin: 2%">
-  <h2 style="text-align: center">Tabelarni prikaz</h2>
+  <h3 style="text-align: center">
+    Tabela promjena stanja nakon svakog presjeka
+  </h3>
   <div fxLayout="row">
     <div style="width: 100% !important; margin: 1%">
       <mat-form-field class="search-form-field" style="width: 100% !important">
@@ -32,7 +34,7 @@
     <ng-container matColumnDef="Date">
       <mat-header-cell *matHeaderCellDef> Datum </mat-header-cell>
       <mat-cell *matCellDef="let element; let i = index">
-        <b style="font-size: smaller">{{ element?.date }} </b>
+        <b style="font-size: smaller">{{ element?.date?.substring(0, 6) }} </b>
       </mat-cell>
     </ng-container>
 
@@ -40,21 +42,27 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header style="color: red">
         <b> Aktivni slučajevi </b>
       </mat-header-cell>
-      <mat-cell *matCellDef="let element">{{ element?.activeCases }}</mat-cell>
+      <mat-cell *matCellDef="let element" style="font-size: smaller">{{
+        element?.activeCases
+      }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="recovered">
       <mat-header-cell *matHeaderCellDef mat-sort-header style="color: green">
         <b> Oporavljeni </b>
       </mat-header-cell>
-      <mat-cell *matCellDef="let element">{{ element?.recovered }}</mat-cell>
+      <mat-cell *matCellDef="let element" style="font-size: smaller">{{
+        element?.recovered
+      }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="deaths">
       <mat-header-cell *matHeaderCellDef mat-sort-header>
         Umrli
       </mat-header-cell>
-      <mat-cell *matCellDef="let element">{{ element?.deaths }}</mat-cell>
+      <mat-cell *matCellDef="let element" style="font-size: smaller">{{
+        element?.deaths
+      }}</mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -76,4 +84,12 @@
     <mat-progress-spinner color="primary" mode="indeterminate">
     </mat-progress-spinner>
   </mat-card>
+</div>
+<div class="footer">
+  <h3>
+    Posljednji presjek: Aktivnih:
+    <b> {{ dataFromDatabase[0]?.activeCases }}</b> Oporavljenih:
+    <b> {{ dataFromDatabase[0]?.recovered }}</b> Umrlih:
+    <b> {{ dataFromDatabase[0]?.deaths }}</b>
+  </h3>
 </div>
