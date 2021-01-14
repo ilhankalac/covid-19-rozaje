@@ -14,7 +14,15 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <canvas id="myChart" style="margin: 0 auto"></canvas>
+  <div style="margin-left: 45%">
+    <mat-progress-spinner
+      color="primary"
+      mode="indeterminate"
+      *ngIf="isLoading"
+    >
+    </mat-progress-spinner>
+  </div>
+  <canvas id="myChart" style="margin: 0 auto"> </canvas>
 
   <!-- <div>
     date <input type="text" #Date /> active

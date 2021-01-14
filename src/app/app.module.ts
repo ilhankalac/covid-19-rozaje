@@ -17,7 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { FormsModule } from '@angular/forms';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @NgModule({
   declarations: [AppComponent, ChartComponent, TableComponent],
   imports: [
@@ -35,7 +35,9 @@ import { FormsModule } from '@angular/forms';
     MatPaginatorModule,
     FormsModule,
     MatSortModule,
+    MatProgressSpinnerModule,
   ],
+  exports: [ChartComponent],
   providers: [],
   bootstrap: [AppComponent],
 })

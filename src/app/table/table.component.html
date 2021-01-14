@@ -25,6 +25,7 @@
       </mat-form-field>
     </div>
   </div>
+
   <mat-table
     [dataSource]="listData"
     matSort
@@ -81,7 +82,11 @@
     *ngIf="isLoading"
     style="display: flex; justify-content: center; align-items: center"
   >
-    <mat-progress-spinner color="primary" mode="indeterminate">
+    <mat-progress-spinner
+      color="primary"
+      mode="indeterminate"
+      *ngIf="isLoading"
+    >
     </mat-progress-spinner>
   </mat-card>
 </div>

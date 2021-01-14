@@ -10,6 +10,7 @@ import { DataService } from '../data.service';
 export class ChartComponent implements OnInit {
   today = new Date();
   public now: Date = new Date();
+  isLoading = true;
   constructor(private dataService: DataService) {
     setInterval(() => {
       this.now = new Date();
@@ -36,6 +37,7 @@ export class ChartComponent implements OnInit {
       this.generatingDataToLabels();
       this.generateMyChart();
       this.existingMonths();
+      this.isLoading = false;
     });
   }
 
