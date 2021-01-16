@@ -4,10 +4,12 @@
 /dist
 /tmp
 /out-tsc
+/.github
 # /src/environments
 # Only exists if Bazel was run
 /bazel-out
 /environments
+/.github
 
 # dependencies
 /node_modules
