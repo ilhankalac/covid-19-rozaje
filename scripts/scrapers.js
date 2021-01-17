@@ -15,14 +15,16 @@ const browser = await puppeteer.launch();
       const allText = await page.$eval('*', el => el.innerText); 
 
       //SPLITIING THE TEXT INTO ARRAY WITH STARTING WORD Rožaje
-      let splittedText = allText.split("Rožaje");
+      let rozajeFinderArray = allText.split("Rožaje");
+      let dateOfPublishing = allText.split("Objavljeno:")[1].substring(0, 13);
+
       let arrayOfData = [];
-      for(let j = 0; j < splittedText.length; j++){
+      for(let j = 0; j < rozajeFinderArray.length; j++){
 
         let finalData = "Rožaje";
 
         for(let i = 0; i < 31; i++){
-          finalData+= splittedText[j][i]
+          finalData+= rozajeFinderArray[j][i]
         }
 
         finalData = finalData.split("\n").filter(item => item != "" && item !="\t");
@@ -33,6 +35,7 @@ const browser = await puppeteer.launch();
       let currentData = arrayOfData[arrayOfData.length - 1];
 
       let objectData = {
+                        "Datum": dateOfPublishing, 
                         "Grad": currentData[0], 
                         "Aktivni": currentData[1], 
                         "Oporavljeni": currentData[2],
@@ -44,7 +47,7 @@ const browser = await puppeteer.launch();
 
       var fs = require('fs');
       fs.readFile('readMe.txt', 'utf8', function (err, data) {
-        fs.writeFile('currentData.json', myJson, function(err, result) {
+        fs.appendFile('currentData.json', myJson, function(err, result) {
           if(err) console.log('error', err);
         });
       });
@@ -58,4 +61,4 @@ const browser = await puppeteer.launch();
 
 
 
-scrapeData('https://www.ijzcg.me/me/novosti/covid19-presjek-stanja-17-januar-u-1730h');
+scrapeData('https://www.ijzcg.me/me/novosti/covid19-presjek-stanja-16-januar-u-1700h');
