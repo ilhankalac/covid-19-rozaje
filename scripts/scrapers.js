@@ -27,15 +27,20 @@ const browser = await puppeteer.launch();
 
         finalData = finalData.split("\n").filter(item => item != "" && item !="\t");
         arrayOfData.push(finalData);
-
-
        
       }
-      let i = 0;
 
       let currentData = arrayOfData[arrayOfData.length - 1];
 
-      var myJson = JSON.stringify(currentData);
+      let objectData = {
+                        "Grad": currentData[0], 
+                        "Aktivni": currentData[1], 
+                        "Oporavljeni": currentData[2],
+                        "Umrli": currentData[3]
+                      };
+
+
+      var myJson = JSON.stringify(objectData);
 
       var fs = require('fs');
       fs.readFile('readMe.txt', 'utf8', function (err, data) {
@@ -43,9 +48,6 @@ const browser = await puppeteer.launch();
           if(err) console.log('error', err);
         });
       });
-     
-
-  
 
       } catch (err) { 
         console.error(err.message);
@@ -56,4 +58,4 @@ const browser = await puppeteer.launch();
 
 
 
-scrapeData('https://www.ijzcg.me/me/novosti/covid19-presjek-stanja-06-januar-u-1700h');
+scrapeData('https://www.ijzcg.me/me/novosti/covid19-presjek-stanja-17-januar-u-1730h');
