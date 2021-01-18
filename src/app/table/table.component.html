@@ -67,11 +67,7 @@
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row
-      *matRowDef="let row; columns: displayedColumns"
-      style="cursor: pointer"
-      (click)="onSelectedRow(row.$key, $event)"
-    ></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
   </mat-table>
   <mat-paginator
     [pageSizeOptions]="[5, 10, 25, 100]"
@@ -90,11 +86,11 @@
     </mat-progress-spinner>
   </mat-card>
 </div>
-<div class="footer">
+<!-- <div class="footer">
   <h3>
     Posljednji presjek: Aktivnih:
     <b> {{ dataFromDatabase[0]?.activeCases }}</b> Oporavljenih:
     <b> {{ dataFromDatabase[0]?.recovered }}</b> Umrlih:
     <b> {{ dataFromDatabase[0]?.deaths }}</b>
   </h3>
-</div>
+</div> -->
