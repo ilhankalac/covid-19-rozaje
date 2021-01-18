@@ -21,10 +21,12 @@ export class TableComponent implements OnChanges {
   @ViewChild(MatSort, { static: true }) matSort: MatSort;
   searchKey = '';
   clickedClear = 'clicked';
+  sumOfTotalPills: number = 0;
+  sumOfTotalPrices: number = 0;
 
   constructor(private dataService: DataService) {}
 
-  ngOnChanges(): void {
+  ngOnChanges() {
     this.listData = new MatTableDataSource(this.dataFromDatabase.reverse());
     this.listData.sort = this.matSort;
     // this.matSort.sort({id: 'Name', start: 'asc', disableClear: true })

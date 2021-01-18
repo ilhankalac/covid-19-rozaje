@@ -1,0 +1,38 @@
+.content {
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  background: #ef5350;
+  height: 70%;
+}
+.map-img {
+  float: right;
+  width: 100%;
+  opacity: 0.8;
+  filter: brightness(0) invert(1);
+}
+
+.row-data {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  padding: 3%;
+}
+.mat-icon {
+  font-size: 40px;
+  color: white;
+}
+@media only screen and (max-width: 925px) {
+  .content {
+    height: 90%;
+    gap: 10px;
+  }
+  .map-img {
+    width: 250px;
+    filter: brightness(0) invert(1);
+  }
+}

@@ -19,10 +19,11 @@ import { MatSortModule } from '@angular/material/sort';
 import { FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HttpClientModule } from '@angular/common/http';
+import { HeaderComponent } from './header/header.component';
 import { MatIconModule } from '@angular/material/icon';
-import { ContainerComponent } from './container/container.component';
+import { MatDividerModule } from '@angular/material/divider';
 @NgModule({
-  declarations: [AppComponent, ChartComponent, TableComponent, ContainerComponent],
+  declarations: [AppComponent, ChartComponent, TableComponent, HeaderComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -41,6 +42,7 @@ import { ContainerComponent } from './container/container.component';
     MatProgressSpinnerModule,
     HttpClientModule,
     MatIconModule,
+    MatDividerModule,
   ],
   exports: [ChartComponent],
   providers: [],

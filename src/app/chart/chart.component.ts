@@ -1,5 +1,4 @@
-import { OnChanges } from '@angular/core';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import Chart from 'chart.js';
 import { DataService } from '../data.service';
 
@@ -8,17 +7,12 @@ import { DataService } from '../data.service';
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.css'],
 })
-export class ChartComponent implements OnChanges {
-  isLoading = true;
-  @Input() dataFromFirebase: any = [];
-
-  dates: any = [];
-  activeCases: any = [];
-  recovered: any = [];
-  deaths: any = [];
+export class ChartComponent implements OnInit {
+  dataFromFirebase: any = [];
 
   today = new Date();
   public now: Date = new Date();
+  isLoading = true;
   constructor(private dataService: DataService) {
     setInterval(() => {
       this.now = new Date();
@@ -27,11 +21,24 @@ export class ChartComponent implements OnChanges {
   ctx;
   myChart;
 
-  ngOnChanges(): void {
-    this.generatingDataToLabels();
-    this.generateMyChart();
-    this.existingMonths();
-    this.isLoading = false;
+  dates: any = [];
+  activeCases: any = [];
+  recovered: any = [];
+  deaths: any = [];
+
+  ngOnInit(): void {
+    this.dataService.getDailyStatistics().subscribe((list) => {
+      this.dataFromFirebase = list.map((item) => {
+        return {
+          $key: item.key,
+          ...item.payload.val(),
+        };
+      });
+      this.generatingDataToLabels();
+      this.generateMyChart();
+      this.existingMonths();
+      this.isLoading = false;
+    });
   }
 
   generateMyChart() {
