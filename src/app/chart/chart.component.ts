@@ -154,25 +154,9 @@ export class ChartComponent implements OnInit {
     );
   }
 
-  /* INPUTING THE DATA */
-  @ViewChild('Date', { static: true }) inputDate: any;
-  @ViewChild('Active', { static: true }) inputActive: any;
-  @ViewChild('Recovered', { static: true }) inputRecovered: any;
-  @ViewChild('Deaths', { static: true }) inputDeaths: any;
-
   insertNewData() {
-    let data: {
-      date: string;
-      activeCases: string;
-      recovered: string;
-      deaths: string;
-    } = {
-      date: this.inputDate.nativeElement.value,
-      activeCases: this.inputActive.nativeElement.value,
-      recovered: this.inputRecovered.nativeElement.value,
-      deaths: this.inputDeaths.nativeElement.value,
-    };
-
-    this.dataService.insertDailyStatistic(data);
+    this.dataService
+      .fetchData()
+      .subscribe((item) => this.dataService.insertDailyStatistic(item));
   }
 }

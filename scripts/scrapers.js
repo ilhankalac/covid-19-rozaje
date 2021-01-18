@@ -35,7 +35,7 @@ const browser = await puppeteer.launch();
       let currentData = arrayOfData[arrayOfData.length - 1];
 
       let objectData = {
-                        "Datum": dateOfPublishing, 
+                        "Datum": dateOfPublishing.toString().trim(), 
                         "Grad": currentData[0], 
                         "Aktivni": currentData[1], 
                         "Oporavljeni": currentData[2],
@@ -47,7 +47,7 @@ const browser = await puppeteer.launch();
 
       var fs = require('fs');
       fs.readFile('readMe.txt', 'utf8', function (err, data) {
-        fs.appendFile('currentData.json', myJson, function(err, result) {
+        fs.writeFile('currentData.json', myJson, function(err, result) {
           if(err) console.log('error', err);
         });
       });
@@ -61,4 +61,4 @@ const browser = await puppeteer.launch();
 
 
 
-scrapeData('https://www.ijzcg.me/me/novosti/covid19-presjek-stanja-16-januar-u-1700h');
+scrapeData('https://www.ijzcg.me/me/novosti/covid19-presjek-stanja-17-januar-u-1730h');
