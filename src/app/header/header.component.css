@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   background: #ef5350;
-  height: 90%;
+  height: 100%;
 }
 .map-img {
   float: right;
@@ -17,6 +17,7 @@
 
 .row-data {
   display: flex;
+  font-size: 8vm;
   flex-direction: row;
   align-items: center;
   gap: 40px;
@@ -28,7 +29,6 @@
 }
 @media only screen and (max-width: 925px) {
   .content {
-    height: 90%;
     gap: 10px;
   }
   .map-img {

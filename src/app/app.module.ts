@@ -22,6 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './header/header.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
 @NgModule({
   declarations: [AppComponent, ChartComponent, TableComponent, HeaderComponent],
   imports: [
@@ -43,6 +44,7 @@ import { MatDividerModule } from '@angular/material/divider';
     HttpClientModule,
     MatIconModule,
     MatDividerModule,
+    MatCardModule,
   ],
   exports: [ChartComponent],
   providers: [],
