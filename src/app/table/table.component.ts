@@ -26,8 +26,10 @@ export class TableComponent implements OnChanges {
 
   constructor(private dataService: DataService) {}
 
+  tempData: any[] = [];
   ngOnChanges() {
-    this.listData = new MatTableDataSource(this.dataFromDatabase.reverse());
+    this.tempData = this.dataFromDatabase;
+    this.listData = new MatTableDataSource(this.tempData.reverse());
     this.listData.sort = this.matSort;
     // this.matSort.sort({id: 'Name', start: 'asc', disableClear: true })
     this.listData.paginator = this.paginator;
