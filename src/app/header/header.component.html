@@ -19,71 +19,64 @@
   </div>
 </div>
 <mat-card style="background: #ef5350">
-  <div class="content">
-    <div *ngIf="totalCases > 0">
-      <div>
-        <div class="row-data">
-          <img
-            style="width: 50px"
-            src="assets/images/Rozaje-grb.png"
-            alt="map"
-          />
-          <h1 style="color: white; font-size: xx-large">Rožaje</h1>
+  <div class="content" *ngIf="totalCases > 0">
+    <div>
+      <div class="row-data">
+        <img style="width: 50px" src="assets/images/Rozaje-grb.png" alt="map" />
+        <h1 style="color: white; font-size: xx-large">Rožaje</h1>
+      </div>
+      <div class="row-data">
+        <mat-icon>date_range</mat-icon>
+        <div>
+          <p style="font-size: large">Datum</p>
+          <p style="color: white; font-size: xx-large">
+            <b>{{ latestElement?.date }}</b>
+          </p>
         </div>
-        <div class="row-data">
-          <mat-icon>date_range</mat-icon>
-          <div>
-            <p style="font-size: large">Datum</p>
-            <p style="color: white; font-size: xx-large">
-              <b>{{ latestElement?.date }}</b>
-            </p>
-          </div>
+      </div>
+      <div class="row-data">
+        <mat-icon>sick</mat-icon>
+        <div>
+          <p style="font-size: large">Ukupno aktivnih</p>
+          <p style="color: white; font-size: xx-large">
+            <b>{{ latestElement?.activeCases }}</b>
+          </p>
         </div>
-        <div class="row-data">
-          <mat-icon>sick</mat-icon>
-          <div>
-            <p style="font-size: large">Ukupno aktivnih</p>
-            <p style="color: white; font-size: xx-large">
-              <b>{{ latestElement?.activeCases }}</b>
-            </p>
-          </div>
+      </div>
+      <div class="row-data">
+        <mat-icon>local_hospital</mat-icon>
+        <div>
+          <p style="font-size: large">Ukupno oporavljenih</p>
+          <p style="color: white; font-size: xx-large">
+            <b>{{ latestElement?.recovered }}</b>
+          </p>
         </div>
-        <div class="row-data">
-          <mat-icon>local_hospital</mat-icon>
-          <div>
-            <p style="font-size: large">Ukupno oporavljenih</p>
-            <p style="color: white; font-size: xx-large">
-              <b>{{ latestElement?.recovered }}</b>
-            </p>
-          </div>
+      </div>
+      <div class="row-data">
+        <mat-icon>close</mat-icon>
+        <div>
+          <p style="font-size: large">Umrlih</p>
+          <p style="color: white; font-size: xx-large">
+            <b>{{ latestElement?.deaths }}</b>
+          </p>
         </div>
-        <div class="row-data">
-          <mat-icon>close</mat-icon>
-          <div>
-            <p style="font-size: large">Umrlih</p>
-            <p style="color: white; font-size: xx-large">
-              <b>{{ latestElement?.deaths }}</b>
-            </p>
-          </div>
-        </div>
-        <div class="row-data">
-          <mat-icon>masks</mat-icon>
-          <div>
-            <p style="font-size: x-large">Ukupno zaraženih</p>
-            <p style="color: white; font-size: xxx-large">
-              <b>
-                {{ totalCases }}
-              </b>
-            </p>
-          </div>
+      </div>
+      <div class="row-data">
+        <mat-icon>masks</mat-icon>
+        <div>
+          <p style="font-size: x-large">Ukupno zaraženih</p>
+          <p style="color: white; font-size: xxx-large">
+            <b>
+              {{ totalCases }}
+            </b>
+          </p>
         </div>
       </div>
     </div>
-    <mat-spinner *ngIf="totalCases == 0"> </mat-spinner>
-
     <div>
       <img class="map-img" src="assets/images/rozaje_map.png" alt="map" />
     </div>
   </div>
+  <mat-spinner style="margin: 0 auto" *ngIf="totalCases == 0"> </mat-spinner>
 </mat-card>
 <mat-card> </mat-card>
