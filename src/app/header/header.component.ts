@@ -16,8 +16,8 @@ export class HeaderComponent implements OnInit {
       this.dataService.getLatestElement(item[0].key).subscribe((el) => {
         this.latestElement = el;
         this.totalCases += Number(el.activeCases);
-        this.totalCases += Number(el.recovered);
-        this.totalCases += Number(el.deaths);
+        // this.totalCases += Number(el.recovered);
+        // this.totalCases += Number(el.deaths);
       })
     );
   }
