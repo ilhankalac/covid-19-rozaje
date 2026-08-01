@@ -3,12 +3,7 @@ import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { DailyStatRow, Summary } from '../core/models';
-import {
-  AVERAGE_WINDOW,
-  formatLongDate,
-  formatNumber,
-  formatSigned,
-} from '../core/stats';
+import { formatLongDate, formatNumber, formatSigned } from '../core/stats';
 import { DataService } from '../data.service';
 
 const SPARK_POINTS = 30;
@@ -19,7 +14,7 @@ interface StatsView {
   hasRows: boolean;
 }
 
-/** Red kartica sa ključnim brojkama za trenutno izabrani period. */
+/** Kartice za isječak koji je izabran u filter traci iznad. */
 @Component({
   selector: 'app-stats',
   templateUrl: './stats.component.html',
@@ -31,15 +26,20 @@ export class StatsComponent {
     this.dataService.visibleRows$,
   ]).pipe(map(([summary, rows]) => this.toView(summary, rows)));
 
-  readonly averageWindow = AVERAGE_WINDOW;
   readonly formatNumber = formatNumber;
   readonly formatSigned = formatSigned;
   readonly formatLongDate = formatLongDate;
 
   constructor(private dataService: DataService) {}
 
-  percentText(value: number | null): string {
-    return value === null ? '' : `${formatSigned(value, 1)} %`;
+  /** "142 → 330" — pokazuje odakle dokle je period išao. */
+  periodEndpoints(summary: Summary): string {
+    if (!summary.first || !summary.latest) {
+      return '';
+    }
+    return `${formatNumber(summary.first.activeCases)} → ${formatNumber(
+      summary.latest.activeCases
+    )}`;
   }
 
   private toView(summary: Summary, rows: DailyStatRow[]): StatsView {

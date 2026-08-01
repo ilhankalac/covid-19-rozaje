@@ -1,0 +1,79 @@
+<section class="overview" *ngIf="summary$ | async as summary">
+  <header class="overview__head">
+    <h2 class="section-title">Epidemija u brojkama</h2>
+    <p class="section-sub">
+      Cijeli zabilježeni period. Ove brojke se ne mijenjaju kad ispod izabereš
+      uži period.
+    </p>
+  </header>
+
+  <div class="overview__grid">
+    <app-stat-card
+      label="Vrhunac"
+      icon="landscape"
+      [value]="formatNumber(summary.peak?.activeCases)"
+      unit="aktivnih"
+      [note]="
+        summary.peak
+          ? 'Najviše zabilježeno, ' + formatLongDate(summary.peak.date)
+          : 'Nema podataka.'
+      "
+    ></app-stat-card>
+
+    <app-stat-card
+      label="Trajanje praćenja"
+      icon="calendar_month"
+      [value]="formatNumber(summary.daysCovered)"
+      unit="dana"
+      [note]="formatNumber(summary.recordCount) + ' objavljenih presjeka'"
+    ></app-stat-card>
+
+    <app-stat-card
+      label="Najveći skok"
+      icon="trending_up"
+      [value]="formatSigned(summary.biggestRise?.change)"
+      [note]="
+        summary.biggestRise
+          ? 'Najveći porast između dva presjeka, ' +
+            formatLongDate(summary.biggestRise.date)
+          : 'Nema zabilježenog rasta.'
+      "
+    ></app-stat-card>
+
+    <app-stat-card
+      label="Umrli"
+      icon="favorite_border"
+      [value]="formatNumber(summary.lastKnownDeaths?.deaths)"
+      [note]="
+        summary.lastKnownDeaths
+          ? 'Posljednji objavljeni podatak, ' +
+            formatLongDate(summary.lastKnownDeaths.date)
+          : 'Podatak nikad nije objavljen.'
+      "
+    ></app-stat-card>
+
+    <app-stat-card
+      label="Oporavljeni"
+      icon="health_and_safety"
+      [value]="formatNumber(summary.lastKnownRecovered?.recovered)"
+      [note]="
+        summary.lastKnownRecovered
+          ? 'Posljednji objavljeni podatak, ' +
+            formatLongDate(summary.lastKnownRecovered.date)
+          : 'Podatak nikad nije objavljen.'
+      "
+    ></app-stat-card>
+  </div>
+
+  <!-- Napomena o arhivi stoji ovdje, uz brojke na koje se odnosi. -->
+  <div class="notice" role="note">
+    <mat-icon class="notice__icon" aria-hidden="true">inventory_2</mat-icon>
+    <p class="notice__body">
+      Institut za javno zdravlje Crne Gore prestao je da objavljuje presjeke po
+      opštinama, pa se arhiva više ne dopunjava. Oporavljeni i umrli nedostaju
+      nakon {{ formatLongDate(summary.lastKnownRecovered?.date) }} i svuda su
+      prikazani kao „—”. Posljednji zabilježeni presjek je
+      {{ formatLongDate(summary.latest?.date) }} i nalazi se na vrhu tabele.
+    </p>
+  </div>
+</section>

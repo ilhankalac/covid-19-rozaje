@@ -1,5 +1,5 @@
-/* Naslovni dio — jedina zasićena površina na stranici. Podaci ispod su
-   na mirnoj podlozi, da grafikoni ostanu čitljivi. */
+/* Zaglavlje — jedina zasićena površina na stranici. Podaci ispod su na
+   mirnoj podlozi, da grafikoni ostanu čitljivi. */
 
 .hero {
   position: relative;
@@ -20,267 +20,121 @@
   position: absolute;
   inset: 0;
   background: radial-gradient(
-    120% 100% at 15% 0%,
-    rgba(0, 0, 0, 0.22) 0%,
-    rgba(0, 0, 0, 0) 60%
+    120% 100% at 12% 0%,
+    rgba(0, 0, 0, 0.24) 0%,
+    rgba(0, 0, 0, 0) 62%
   );
   pointer-events: none;
 }
 
-/* Mapa je vodeni žig, ne slika: cijela silueta staje u hero (nije isječena),
-   drži se desne ivice i utapa se ulijevo maskom da ne pravi šum ispod teksta. */
+/* Mapa Crne Gore sa pinom na Rožajama, desno u zaglavlju.
+   Izvorna slika je crna kontura na providnoj podlozi: brightness(0) je
+   izjednači u crno, invert(1) je pretvori u bijelo. Kontura je debela 1px na
+   470px visine, pa se pri smanjivanju razvodni — dvije bijele drop-shadow
+   sjenke preko sebe je vraćaju u punu debljinu. */
 .hero__map {
   position: absolute;
-  right: -24px;
+  right: 8px;
   top: 50%;
   transform: translateY(-50%);
-  height: 86%;
-  max-height: 260px;
+  height: 96%;
+  max-height: 300px;
   width: auto;
-  opacity: 0.16;
-  filter: brightness(0) invert(1);
+  opacity: 0.55;
+  filter: brightness(0) invert(1) drop-shadow(0 0 0.6px #fff)
+    drop-shadow(0 0 0.6px #fff);
   pointer-events: none;
   user-select: none;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(0, 0, 0, 0.35) 30%,
-    #000 70%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(0, 0, 0, 0.35) 30%,
-    #000 70%
-  );
 }
 
 .hero__shell {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-areas:
-    "brand meta"
-    "figure meta";
-  gap: var(--gap-5) var(--gap-6);
-  align-items: end;
   padding-top: var(--gap-6);
   padding-bottom: var(--gap-6);
 }
 
-/* --- Brend ------------------------------------------------------------- */
+/* --- Identitet ---------------------------------------------------------- */
 
 .hero__brand {
-  grid-area: brand;
   display: flex;
   align-items: center;
   gap: var(--gap-3);
 }
 
 .hero__crest {
-  width: 44px;
+  width: 46px;
   height: auto;
   flex: none;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
 }
 
 .hero__town {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
 }
 
 .hero__kicker {
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   color: var(--ink-on-brand-2);
 }
 
-/* --- Glavna brojka ----------------------------------------------------- */
+/* --- Period ------------------------------------------------------------- */
 
-.hero__figure {
-  grid-area: figure;
-}
-
-.hero__eyebrow {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-on-brand-2);
-  margin-bottom: var(--gap-2);
-}
-
-.hero__value {
-  /* Proporcionalne cifre — tabular bi na ovoj veličini izgledao razvučeno. */
-  font-size: clamp(3.25rem, 9vw, 4.75rem);
-  font-weight: 700;
-  line-height: 0.95;
-  letter-spacing: -0.035em;
-}
-
-.hero__label {
-  font-size: 1rem;
-  color: var(--ink-on-brand-2);
-  margin-top: var(--gap-1);
-}
-
-.hero__deltas {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--gap-2);
-  margin-top: var(--gap-4);
-}
-
-/* Smjer nosi strelica i predznak, ne boja — čipovi na crvenoj podlozi su
-   namjerno jednobojni. */
-.hero__chip {
+.hero__period {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 12px 5px 9px;
+  gap: 7px;
+  margin-top: var(--gap-4);
+  padding: 6px 14px 6px 10px;
   border-radius: var(--r-pill);
-  background: rgba(255, 255, 255, 0.16);
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid var(--hero-line);
   font-size: 0.875rem;
   font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  backdrop-filter: blur(2px);
 }
 
-.hero__chip .mat-icon {
+.hero__period .mat-icon {
   font-size: 17px;
   width: 17px;
   height: 17px;
   line-height: 17px;
 }
 
-.hero__chip-note {
-  font-weight: 400;
-  color: var(--ink-on-brand-2);
-  font-variant-numeric: normal;
-}
-
-/* --- Sporedne brojke --------------------------------------------------- */
-
-.hero__meta {
-  grid-area: meta;
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-4);
-  padding-left: var(--gap-6);
-  border-left: 1px solid var(--hero-line);
-  min-width: 190px;
-}
-
-.hero__meta-value {
-  display: block;
-  font-size: 1.375rem;
-  font-weight: 600;
-  line-height: 1.15;
-}
-
-.hero__meta-value--sm {
+.hero__lead {
+  margin-top: var(--gap-3);
+  max-width: 62ch;
   font-size: 0.9375rem;
-  font-weight: 600;
-}
-
-.hero__meta-label {
-  display: block;
-  font-size: 0.75rem;
+  line-height: 1.55;
   color: var(--ink-on-brand-2);
 }
 
-/* --- Učitavanje -------------------------------------------------------- */
-
-.hero__shell--loading {
+.hero__lead--loading {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: var(--gap-3);
-  min-height: 232px;
+  gap: var(--gap-2);
 }
 
 .hero__spinner ::ng-deep circle {
   stroke: #ffffff;
 }
 
-.hero__loading-text {
-  color: var(--ink-on-brand-2);
-  font-size: 0.875rem;
-}
+/* --- Responzivno -------------------------------------------------------- */
 
-/* --- Napomena o arhivi ------------------------------------------------- */
-
-.notice {
-  display: flex;
-  gap: var(--gap-3);
-  margin-top: var(--gap-5);
-  padding: var(--gap-4);
-  border-radius: var(--r-md);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--brand-500);
-  box-shadow: var(--shadow-1);
-}
-
-.notice__icon {
-  flex: none;
-  color: var(--brand-600);
-}
-
-.notice__title {
-  font-weight: 600;
-  font-size: 0.9375rem;
-  color: var(--ink);
-}
-
-.notice__body {
-  font-size: 0.875rem;
-  color: var(--ink-2);
-  margin-top: 2px;
-  max-width: 78ch;
-}
-
-/* --- Responzivno ------------------------------------------------------- */
-
-@media (max-width: 860px) {
-  .hero__shell {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "brand"
-      "figure"
-      "meta";
-    gap: var(--gap-5);
-    align-items: start;
-  }
-
-  .hero__meta {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: var(--gap-5);
-    padding-left: 0;
-    padding-top: var(--gap-4);
-    border-left: none;
-    border-top: 1px solid var(--hero-line);
-    min-width: 0;
-  }
-
+@media (max-width: 640px) {
   .hero__map {
     right: -48px;
-    height: 60%;
+    height: 62%;
     opacity: 0.12;
   }
-}
 
-@media (max-width: 520px) {
-  .hero__chip-note {
-    display: none;
+  .hero__town {
+    font-size: 1.5rem;
   }
 
-  .hero__meta-value {
-    font-size: 1.125rem;
+  .hero__lead {
+    font-size: 0.875rem;
   }
 }

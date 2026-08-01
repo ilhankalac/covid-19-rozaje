@@ -2,6 +2,10 @@
   display: block;
 }
 
+.stats__head {
+  margin-bottom: var(--gap-4);
+}
+
 .stats__grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(232px, 1fr));

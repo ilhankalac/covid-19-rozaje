@@ -19,6 +19,7 @@ import { AppComponent } from './app.component';
 import { ChartComponent } from './chart/chart.component';
 import { FilterBarComponent } from './filter-bar/filter-bar.component';
 import { HeaderComponent } from './header/header.component';
+import { OverviewComponent } from './overview/overview.component';
 import { StatCardComponent } from './stat-card/stat-card.component';
 import { StatsComponent } from './stats/stats.component';
 import { TableComponent } from './table/table.component';
@@ -27,6 +28,7 @@ import { TableComponent } from './table/table.component';
   declarations: [
     AppComponent,
     HeaderComponent,
+    OverviewComponent,
     FilterBarComponent,
     StatsComponent,
     StatCardComponent,

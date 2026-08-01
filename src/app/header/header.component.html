@@ -1,7 +1,7 @@
 <header class="hero">
   <img class="hero__map" src="assets/images/rozaje_map.png" alt="" aria-hidden="true" />
 
-  <div class="shell hero__shell" *ngIf="summary$ | async as summary; else loading">
+  <div class="shell hero__shell">
     <div class="hero__brand">
       <img
         class="hero__crest"
@@ -10,80 +10,37 @@
       />
       <div>
         <h1 class="hero__town">Rožaje</h1>
-        <p class="hero__kicker">COVID-19 statistika Opštine Rožaje</p>
+        <p class="hero__kicker">COVID-19 arhiva Opštine Rožaje</p>
       </div>
     </div>
 
-    <div class="hero__figure" *ngIf="summary.latest as latest">
-      <p class="hero__eyebrow">Presjek na dan {{ formatLongDate(latest.date) }}</p>
-
-      <p class="hero__value">{{ formatNumber(latest.activeCases) }}</p>
-      <p class="hero__label">aktivnih slučajeva</p>
-
-      <div class="hero__deltas">
-        <span class="hero__chip" *ngIf="summary.changeFromPrevious !== null">
-          <mat-icon aria-hidden="true">{{
-            trendOf(summary.changeFromPrevious) === "up"
-              ? "trending_up"
-              : trendOf(summary.changeFromPrevious) === "down"
-              ? "trending_down"
-              : "trending_flat"
-          }}</mat-icon>
-          {{ formatSigned(summary.changeFromPrevious) }}
-          <span class="hero__chip-note">od prethodnog presjeka</span>
+    <ng-container *ngIf="summary$ | async as summary; else loading">
+      <p class="hero__period" *ngIf="summary.first as first">
+        <mat-icon aria-hidden="true">event</mat-icon>
+        <span>
+          {{ formatLongDate(first.date) }} —
+          {{ formatLongDate(summary.latest?.date) }}
         </span>
-
-        <span class="hero__chip" *ngIf="summary.percentOfPeak !== null">
-          <mat-icon aria-hidden="true">landscape</mat-icon>
-          {{ formatNumber(summary.percentOfPeak) }}%
-          <span class="hero__chip-note">vrhunca epidemije</span>
-        </span>
-      </div>
-    </div>
-
-    <div class="hero__meta">
-      <div class="hero__meta-item">
-        <span class="hero__meta-value">{{ formatNumber(summary.recordCount) }}</span>
-        <span class="hero__meta-label">presjeka u bazi</span>
-      </div>
-      <div class="hero__meta-item">
-        <span class="hero__meta-value">{{ formatNumber(summary.daysCovered) }}</span>
-        <span class="hero__meta-label">dana praćenja</span>
-      </div>
-      <div class="hero__meta-item" *ngIf="summary.first as first">
-        <span class="hero__meta-value hero__meta-value--sm">
-          {{ first.dateLabel }} — {{ summary.latest?.dateLabel }}
-        </span>
-        <span class="hero__meta-label">obuhvaćeni period</span>
-      </div>
-    </div>
-  </div>
-
-  <ng-template #loading>
-    <div class="shell hero__shell hero__shell--loading">
-      <mat-progress-spinner
-        diameter="44"
-        strokeWidth="3"
-        mode="indeterminate"
-        class="hero__spinner"
-      ></mat-progress-spinner>
-      <p class="hero__loading-text">Učitavanje podataka…</p>
-    </div>
-  </ng-template>
-</header>
-
-<div class="shell" *ngIf="summary$ | async as summary">
-  <div class="notice" role="note" *ngIf="isStale(summary)">
-    <mat-icon class="notice__icon" aria-hidden="true">inventory_2</mat-icon>
-    <div>
-      <p class="notice__title">Arhivski podaci — {{ staleNotice(summary) }}</p>
-      <p class="notice__body">
-        Institut za javno zdravlje Crne Gore prestao je da objavljuje dnevne
-        presjeke po opštinama, pa se stranica više ne dopunjava. Podaci o
-        oporavljenim i umrlim slučajevima nedostaju nakon
-        {{ formatLongDate(summary.lastKnownRecovered?.date) }} i prikazani su kao
-        „—”. Sve ispod je kompletna arhiva onoga što je objavljeno.
       </p>
-    </div>
+
+      <p class="hero__lead">
+        Svaki presjek stanja koji je Institut za javno zdravlje Crne Gore
+        objavio za Opštinu Rožaje, sačuvan na jednom mjestu. Objavljivanje je
+        prekinuto u septembru 2021. — ovo su arhivski podaci, ne trenutno
+        stanje.
+      </p>
+    </ng-container>
+
+    <ng-template #loading>
+      <p class="hero__lead hero__lead--loading">
+        <mat-progress-spinner
+          diameter="20"
+          strokeWidth="2"
+          mode="indeterminate"
+          class="hero__spinner"
+        ></mat-progress-spinner>
+        Učitavanje arhive…
+      </p>
+    </ng-template>
   </div>
-</div>
+</header>

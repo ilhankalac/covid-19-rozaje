@@ -45,8 +45,15 @@ export interface Summary {
   change7dPercent: number | null;
 
   average7: number | null;
+  /** Prosjek aktivnih kroz sve presjeke u opsegu. */
+  averageAll: number | null;
+
   peak: DailyStatRow | null;
-  /** Trenutno stanje kao procenat vrhunca. */
+  /** Najniže zabilježeno stanje u opsegu. */
+  low: DailyStatRow | null;
+  /** Stanje na kraju opsega u odnosu na stanje na početku. */
+  totalChange: number | null;
+  /** Stanje na kraju opsega kao procenat vrhunca. */
   percentOfPeak: number | null;
 
   /** Najveći zabilježeni skok i pad između dva uzastopna presjeka. */

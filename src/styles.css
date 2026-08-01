@@ -19,12 +19,14 @@
   --brand-800: #7d201f;
   --brand-900: #4d1413;
 
-  /* Hero ima svoje tokene: boje podataka se u dark modu posvjetljuju radi
-     kontrasta na tamnoj podlozi, a hero mora da ide u suprotnom smjeru. */
-  --hero-from: var(--brand-800);
-  --hero-mid: var(--brand-600);
-  --hero-to: var(--brand-400);
-  --hero-line: rgba(255, 255, 255, 0.22);
+  /* Zaglavlje ima svoje tokene i namjerno izgleda isto u oba moda: to je
+     brend traka, a bijela mapa i tekst na njoj traže punu crvenu podlogu.
+     Boje podataka se u dark modu posvjetljuju radi kontrasta na tamnoj
+     podlozi, pa se zaglavlje ne smije oslanjati na njih. */
+  --hero-from: #8f2523;
+  --hero-mid: #d33f3d;
+  --hero-to: #ef5350;
+  --hero-line: rgba(255, 255, 255, 0.28);
 
   /* --- Podloge i tekst -------------------------------------------------- */
   --page: #f4f4f1;
@@ -87,11 +89,6 @@
     --brand-500: #e66767;
     --brand-600: #e07b7b;
 
-    --hero-from: #34100f;
-    --hero-mid: #6b1c1b;
-    --hero-to: #9c2f2d;
-    --hero-line: rgba(255, 255, 255, 0.16);
-
     --page: #0d0d0d;
     --surface: #1a1a19;
     --surface-2: #212120;
@@ -123,11 +120,6 @@
   --brand-400: #e66767;
   --brand-500: #e66767;
   --brand-600: #e07b7b;
-
-  --hero-from: #34100f;
-  --hero-mid: #6b1c1b;
-  --hero-to: #9c2f2d;
-  --hero-line: rgba(255, 255, 255, 0.16);
 
   --page: #0d0d0d;
   --surface: #1a1a19;

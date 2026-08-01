@@ -1,94 +1,53 @@
-<section class="stats" *ngIf="view$ | async as view" aria-label="Ključne brojke">
+<section class="stats" *ngIf="view$ | async as view">
+  <header class="stats__head">
+    <h2 class="section-title">Izabrani period</h2>
+    <p class="section-sub">
+      Sve ispod filter trake — ove kartice, oba grafikona i tabela — čita isti
+      isječak podataka.
+    </p>
+  </header>
+
   <p class="stats__empty" *ngIf="!view.hasRows">
     Za izabrani period nema presjeka.
   </p>
 
   <div class="stats__grid" *ngIf="view.hasRows">
     <app-stat-card
-      label="Aktivni slučajevi na kraju perioda"
-      icon="coronavirus"
-      [value]="formatNumber(view.summary.latest?.activeCases)"
-      [delta]="view.summary.changeFromPrevious"
-      [deltaText]="formatSigned(view.summary.changeFromPrevious)"
-      deltaNote="od prethodnog presjeka"
-      [note]="'Stanje na dan ' + formatLongDate(view.summary.latest?.date)"
+      label="Najviše u periodu"
+      icon="arrow_upward"
+      [value]="formatNumber(view.summary.peak?.activeCases)"
+      unit="aktivnih"
+      [note]="formatLongDate(view.summary.peak?.date)"
       [spark]="view.spark"
     ></app-stat-card>
 
     <app-stat-card
-      label="Promjena za 7 dana"
-      icon="date_range"
-      [value]="formatSigned(view.summary.change7d)"
-      [delta]="view.summary.change7d"
-      [deltaText]="percentText(view.summary.change7dPercent) || '—'"
-      deltaNote="relativno"
-      note="Razlika u odnosu na presjek od prije sedmicu dana."
+      label="Najmanje u periodu"
+      icon="arrow_downward"
+      [value]="formatNumber(view.summary.low?.activeCases)"
+      unit="aktivnih"
+      [note]="formatLongDate(view.summary.low?.date)"
     ></app-stat-card>
 
     <app-stat-card
-      label="Prosjek kroz {{ averageWindow }} presjeka"
+      label="Prosjek u periodu"
       icon="show_chart"
-      [value]="formatNumber(view.summary.average7, 1)"
-      note="Klizni prosjek izglađuje rupe i duplikate u objavama."
-    ></app-stat-card>
-
-    <app-stat-card
-      label="Vrhunac u periodu"
-      icon="landscape"
-      [value]="formatNumber(view.summary.peak?.activeCases)"
+      [value]="formatNumber(view.summary.averageAll, 1)"
+      unit="aktivnih"
       [note]="
-        'Dostignut ' +
-        formatLongDate(view.summary.peak?.date) +
-        (view.summary.percentOfPeak !== null
-          ? ' · trenutno ' + formatNumber(view.summary.percentOfPeak) + '% vrhunca'
-          : '')
+        'Prosjek kroz ' +
+        formatNumber(view.summary.recordCount) +
+        ' presjeka u periodu.'
       "
     ></app-stat-card>
 
     <app-stat-card
-      label="Najveći skok između dva presjeka"
-      icon="trending_up"
-      [value]="formatSigned(view.summary.biggestRise?.change)"
-      [note]="
-        view.summary.biggestRise
-          ? formatLongDate(view.summary.biggestRise.date)
-          : 'Nema zabilježenog rasta u periodu.'
-      "
-    ></app-stat-card>
-
-    <app-stat-card
-      label="Najveći pad između dva presjeka"
-      icon="trending_down"
-      [value]="formatSigned(view.summary.biggestDrop?.change)"
-      [note]="
-        view.summary.biggestDrop
-          ? formatLongDate(view.summary.biggestDrop.date)
-          : 'Nema zabilježenog pada u periodu.'
-      "
-    ></app-stat-card>
-
-    <app-stat-card
-      label="Oporavljeni"
-      icon="health_and_safety"
-      [value]="formatNumber(view.summary.lastKnownRecovered?.recovered)"
-      [note]="
-        view.summary.lastKnownRecovered
-          ? 'Posljednji objavljeni podatak, ' +
-            formatLongDate(view.summary.lastKnownRecovered.date)
-          : 'Nije objavljivano u ovom periodu.'
-      "
-    ></app-stat-card>
-
-    <app-stat-card
-      label="Umrli"
-      icon="favorite_border"
-      [value]="formatNumber(view.summary.lastKnownDeaths?.deaths)"
-      [note]="
-        view.summary.lastKnownDeaths
-          ? 'Posljednji objavljeni podatak, ' +
-            formatLongDate(view.summary.lastKnownDeaths.date)
-          : 'Nije objavljivano u ovom periodu.'
-      "
+      label="Promjena kroz period"
+      icon="swap_vert"
+      [value]="formatSigned(view.summary.totalChange)"
+      [delta]="view.summary.totalChange"
+      [deltaText]="periodEndpoints(view.summary)"
+      [note]="'Od prvog do posljednjeg presjeka u periodu.'"
     ></app-stat-card>
   </div>
 </section>

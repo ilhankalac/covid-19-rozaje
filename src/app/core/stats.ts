@@ -170,7 +170,10 @@ export function summarize(rows: DailyStatRow[]): Summary {
     change7d: null,
     change7dPercent: null,
     average7: null,
+    averageAll: null,
     peak: null,
+    low: null,
+    totalChange: null,
     percentOfPeak: null,
     biggestRise: null,
     biggestDrop: null,
@@ -201,9 +204,22 @@ export function summarize(rows: DailyStatRow[]): Summary {
       : null;
 
   const peak = extremeBy(rows, (row) => row.activeCases, (a, b) => a > b);
+  const low = extremeBy(rows, (row) => row.activeCases, (a, b) => a < b);
   const percentOfPeak =
     peak && peak.activeCases && latest.activeCases !== null
       ? (latest.activeCases / peak.activeCases) * 100
+      : null;
+
+  const known = rows
+    .map((row) => row.activeCases)
+    .filter((value): value is number => value !== null);
+  const averageAll = known.length
+    ? known.reduce((sum, value) => sum + value, 0) / known.length
+    : null;
+
+  const totalChange =
+    first.activeCases !== null && latest.activeCases !== null
+      ? latest.activeCases - first.activeCases
       : null;
 
   const today = new Date();
@@ -217,7 +233,10 @@ export function summarize(rows: DailyStatRow[]): Summary {
     change7d,
     change7dPercent,
     average7: latest.average7,
+    averageAll,
     peak,
+    low,
+    totalChange,
     percentOfPeak,
     biggestRise: extremeBy(rows, (row) => row.change, (a, b) => a > b),
     biggestDrop: extremeBy(rows, (row) => row.change, (a, b) => a < b),
