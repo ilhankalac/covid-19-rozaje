@@ -154,6 +154,17 @@
   background: var(--surface-sunken);
 }
 
+/* Vrsta mjere uz naziv kolone: „na taj dan” vs „ukupno”. Tiša je od naziva,
+   da zaglavlje ostane pregledno, ali je uvijek vidljiva — ne samo u title-u. */
+.th-note {
+  display: block;
+  font-weight: 400;
+  font-size: 0.6875rem;
+  color: var(--ink-muted);
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+
 /* Kolone brojeva se poravnavaju vertikalno — ovdje tabular cifre imaju smisla. */
 .is-numeric {
   text-align: right;
@@ -193,6 +204,13 @@
 
 .data-table .delta {
   font-size: 0.8125rem;
+}
+
+/* Prenesen kumulativni zbir („≥ 41”): isprekidana donja linija ga razlikuje
+   od objavljene vrijednosti, a da ne viče. */
+.cell-carried {
+  border-bottom: 1px dashed var(--border-strong);
+  cursor: help;
 }
 
 .table-empty {

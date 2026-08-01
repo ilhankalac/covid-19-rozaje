@@ -55,8 +55,14 @@
       </ng-container>
 
       <ng-container matColumnDef="activeCases">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="is-numeric">
-          Aktivni
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="is-numeric"
+          title="Broj aktivnih slučajeva na taj dan"
+        >
+          Aktivni <span class="th-note">na taj dan</span>
         </th>
         <td mat-cell *matCellDef="let row" class="is-numeric is-strong">
           {{ formatNumber(row.activeCases) }}
@@ -84,21 +90,49 @@
         </td>
       </ng-container>
 
+      <!-- Kumulativne kolone: vrijednost je zbir od početka praćenja do tog
+           dana, a ne broj za taj dan. Zato „ukupno” stoji u zaglavlju. -->
       <ng-container matColumnDef="recovered">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="is-numeric">
-          Oporavljeni
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="is-numeric"
+          title="Ukupno oporavljenih od početka praćenja do tog dana"
+        >
+          Oporavljeni <span class="th-note">ukupno</span>
         </th>
         <td mat-cell *matCellDef="let row" class="is-numeric is-muted">
-          {{ formatNumber(row.recovered) }}
+          <span
+            *ngIf="row.recoveredCarried; else recoveredPublished"
+            class="cell-carried"
+            [title]="carriedTitle(row.recoveredToDate, 'oporavljenih')"
+            >≥ {{ formatNumber(row.recoveredToDate) }}</span
+          >
+          <ng-template #recoveredPublished>{{
+            formatNumber(row.recovered)
+          }}</ng-template>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="deaths">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="is-numeric">
-          Umrli
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="is-numeric"
+          title="Ukupno umrlih od početka praćenja do tog dana"
+        >
+          Umrli <span class="th-note">ukupno</span>
         </th>
         <td mat-cell *matCellDef="let row" class="is-numeric is-muted">
-          {{ formatNumber(row.deaths) }}
+          <span
+            *ngIf="row.deathsCarried; else deathsPublished"
+            class="cell-carried"
+            [title]="carriedTitle(row.deathsToDate, 'umrlih')"
+            >≥ {{ formatNumber(row.deathsToDate) }}</span
+          >
+          <ng-template #deathsPublished>{{ formatNumber(row.deaths) }}</ng-template>
         </td>
       </ng-container>
 
@@ -126,7 +160,13 @@
   ></mat-paginator>
 
   <p class="table-note">
-    „—” znači da podatak nije objavljen. Institut za javno zdravlje CG prestao je
-    da objavljuje oporavljene i umrle po opštinama.
+    <strong>Aktivni</strong> je stanje na taj dan.
+    <strong>Oporavljeni</strong> i <strong>umrli</strong> su zbirovi od početka
+    praćenja — 41 umrli znači ukupno kroz cijelu epidemiju, ne tog dana.
+    <strong>Promjena</strong> se odnosi na prethodni <em>objavljeni</em> presjek,
+    a ne uvijek na prethodni dan: oznaka poput „+7d” kaže koliko je dana
+    preskočeno. Oznaka <strong>≥</strong> znači da izvor za taj dan nije
+    objavio zbir, pa stoji posljednji poznati — kumulativni zbir ne može da
+    opadne, pa je to donja granica. „—” znači da podatak nikad nije objavljen.
   </p>
 </section>

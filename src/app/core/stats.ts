@@ -102,16 +102,36 @@ export function withDerived(stats: DailyStat[]): DailyStatRow[] {
     AVERAGE_WINDOW
   );
 
+  // Posljednji viđeni kumulativni zbirovi, koji se prenose kroz presjeke u
+  // kojima izvor te podatke nije objavio.
+  let lastDeaths: number | null = null;
+  let lastRecovered: number | null = null;
+
   return stats.map((stat, index) => {
     const previous = index > 0 ? stats[index - 1] : null;
     const hasChange =
       previous !== null && previous.activeCases !== null && stat.activeCases !== null;
+
+    // Tekući maksimum, ne posljednja vrijednost: tvrdnja je „najmanje N”, a
+    // izvor na par mjesta prijavi manji zbir nego ranije (npr. umrli 11 -> 10
+    // u avgustu 2020). Jednom prijavljenih 11 ostaje donja granica.
+    if (stat.deaths !== null) {
+      lastDeaths = lastDeaths === null ? stat.deaths : Math.max(lastDeaths, stat.deaths);
+    }
+    if (stat.recovered !== null) {
+      lastRecovered =
+        lastRecovered === null ? stat.recovered : Math.max(lastRecovered, stat.recovered);
+    }
 
     return {
       ...stat,
       change: hasChange ? stat.activeCases - previous.activeCases : null,
       daysSincePrevious: previous ? daysBetween(previous.date, stat.date) : null,
       average7: averages[index],
+      deathsToDate: lastDeaths,
+      recoveredToDate: lastRecovered,
+      deathsCarried: stat.deaths === null && lastDeaths !== null,
+      recoveredCarried: stat.recovered === null && lastRecovered !== null,
     };
   });
 }

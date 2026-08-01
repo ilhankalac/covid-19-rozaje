@@ -64,10 +64,16 @@ export class TableComponent implements AfterViewInit, OnDestroy {
           return row.change === null ? Number.NEGATIVE_INFINITY : row.change;
         case 'average7':
           return row.average7 === null ? Number.NEGATIVE_INFINITY : row.average7;
+        // Sortira se po prenesenom zbiru, da redovi bez objavljenog podatka
+        // ne padnu na dno kao da su nula.
         case 'recovered':
-          return row.recovered === null ? Number.NEGATIVE_INFINITY : row.recovered;
+          return row.recoveredToDate === null
+            ? Number.NEGATIVE_INFINITY
+            : row.recoveredToDate;
         case 'deaths':
-          return row.deaths === null ? Number.NEGATIVE_INFINITY : row.deaths;
+          return row.deathsToDate === null
+            ? Number.NEGATIVE_INFINITY
+            : row.deathsToDate;
         default:
           return row.activeCases === null
             ? Number.NEGATIVE_INFINITY
@@ -110,6 +116,11 @@ export class TableComponent implements AfterViewInit, OnDestroy {
     return trendOf(value);
   }
 
+  /** Objašnjava zašto uz broj stoji „≥”: zbir je prenesen, nije objavljen. */
+  carriedTitle(value: number | null, what: string): string {
+    return `Najmanje ${formatNumber(value)} ${what} — posljednji objavljeni zbir. Izvor poslije toga nije objavljivao ovaj podatak, a kumulativni zbir ne može da opadne.`;
+  }
+
   trendIcon(value: number | null): string {
     switch (trendOf(value)) {
       case 'up':
@@ -128,22 +139,34 @@ export class TableComponent implements AfterViewInit, OnDestroy {
       this.listData.sort
     );
 
+    // Zaglavlja govore i vrstu mjere: aktivni su stanje na dan, oporavljeni i
+    // umrli su kumulativni zbirovi, a promjena zavisi od razmaka do prethodnog
+    // presjeka — zato razmak ide kao zasebna kolona.
     const header = [
       'Datum',
-      'Aktivni',
-      'Promjena',
-      `Prosjek ${AVERAGE_WINDOW}`,
-      'Oporavljeni',
-      'Umrli',
+      'Aktivni (na taj dan)',
+      'Promjena od prethodnog presjeka',
+      'Dana od prethodnog presjeka',
+      `Prosjek kroz ${AVERAGE_WINDOW} presjeka`,
+      'Oporavljeni (ukupno, objavljeno)',
+      'Umrli (ukupno, objavljeno)',
+      'Oporavljeni (ukupno, najmanje)',
+      'Umrli (ukupno, najmanje)',
     ];
 
+    // Objavljena i prenesena vrijednost idu u zasebne kolone: ko obrađuje
+    // izvoz mora moći da razlikuje šta je izvor stvarno rekao od donje granice
+    // koju smo izveli.
     const body = rows.map((row) => [
       row.dateLabel,
       csvValue(row.activeCases),
       csvValue(row.change),
+      csvValue(row.daysSincePrevious),
       csvValue(row.average7, 1),
       csvValue(row.recovered),
       csvValue(row.deaths),
+      csvValue(row.recoveredToDate),
+      csvValue(row.deathsToDate),
     ]);
 
     const csv = [header, ...body]

@@ -28,6 +28,17 @@ export interface DailyStatRow extends DailyStat {
   daysSincePrevious: number | null;
   /** Klizni prosjek aktivnih kroz 7 presjeka. */
   average7: number | null;
+
+  /**
+   * Umrli i oporavljeni su kumulativni zbirovi, pa ne mogu pasti. Kad izvor
+   * prestane da ih objavljuje, posljednji poznati zbir i dalje važi kao donja
+   * granica — zato se prenosi naprijed umjesto da se prikaže kao nepoznat.
+   */
+  deathsToDate: number | null;
+  recoveredToDate: number | null;
+  /** true kad vrijednost nije objavljena za taj dan nego prenesena iz ranijeg. */
+  deathsCarried: boolean;
+  recoveredCarried: boolean;
 }
 
 export type Trend = 'up' | 'down' | 'flat';

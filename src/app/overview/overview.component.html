@@ -40,28 +40,20 @@
       "
     ></app-stat-card>
 
+    <!-- Umrli i oporavljeni su kumulativni zbirovi, ne dnevne brojke —
+         zato „ukupno” stoji u samoj oznaci, a ne tek u fusnoti. -->
     <app-stat-card
-      label="Umrli"
+      label="Umrli — ukupno"
       icon="favorite_border"
       [value]="formatNumber(summary.lastKnownDeaths?.deaths)"
-      [note]="
-        summary.lastKnownDeaths
-          ? 'Posljednji objavljeni podatak, ' +
-            formatLongDate(summary.lastKnownDeaths.date)
-          : 'Podatak nikad nije objavljen.'
-      "
+      [note]="cumulativeNote(summary, summary.lastKnownDeaths)"
     ></app-stat-card>
 
     <app-stat-card
-      label="Oporavljeni"
+      label="Oporavljeni — ukupno"
       icon="health_and_safety"
       [value]="formatNumber(summary.lastKnownRecovered?.recovered)"
-      [note]="
-        summary.lastKnownRecovered
-          ? 'Posljednji objavljeni podatak, ' +
-            formatLongDate(summary.lastKnownRecovered.date)
-          : 'Podatak nikad nije objavljen.'
-      "
+      [note]="cumulativeNote(summary, summary.lastKnownRecovered)"
     ></app-stat-card>
   </div>
 
