@@ -28,10 +28,8 @@
 }
 
 /* Mapa Crne Gore sa pinom na Rožajama, desno u zaglavlju.
-   Izvorna slika je crna kontura na providnoj podlozi: brightness(0) je
-   izjednači u crno, invert(1) je pretvori u bijelo. Kontura je debela 1px na
-   470px visine, pa se pri smanjivanju razvodni — dvije bijele drop-shadow
-   sjenke preko sebe je vraćaju u punu debljinu. */
+   Slika je već čisto bijela kontura na stvarno providnoj podlozi i linije su
+   zadebljane da prežive smanjivanje — zato ovdje nema nikakvih filtera. */
 .hero__map {
   position: absolute;
   right: 8px;
@@ -41,8 +39,6 @@
   max-height: 300px;
   width: auto;
   opacity: 0.55;
-  filter: brightness(0) invert(1) drop-shadow(0 0 0.6px #fff)
-    drop-shadow(0 0 0.6px #fff);
   pointer-events: none;
   user-select: none;
 }
@@ -124,10 +120,11 @@
 /* --- Responzivno -------------------------------------------------------- */
 
 @media (max-width: 640px) {
+  /* Na uskom ekranu mapa stoji iza teksta, pa je nešto tiša nego na desktopu. */
   .hero__map {
-    right: -48px;
-    height: 62%;
-    opacity: 0.12;
+    right: -40px;
+    height: 70%;
+    opacity: 0.3;
   }
 
   .hero__town {
