@@ -1,6 +1,10 @@
 {
   "rules": {
-    ".read": "now < 1602108000000",  // 2020-10-8
-    ".write": "now < 1602108000000",  // 2020-10-8
+    ".read": false,
+    ".write": false,
+    "dailyStatistics": {
+      ".read": true,
+      ".write": false
+    }
   }
 }
