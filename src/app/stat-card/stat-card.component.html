@@ -1,0 +1,32 @@
+<div class="tile">
+  <div class="tile__head">
+    <span class="tile__label">{{ label }}</span>
+    <mat-icon class="tile__icon" *ngIf="icon" aria-hidden="true">{{ icon }}</mat-icon>
+  </div>
+
+  <p class="tile__value">
+    {{ value }}<span class="tile__unit" *ngIf="unit">{{ unit }}</span>
+  </p>
+
+  <div class="tile__delta" *ngIf="delta !== null || deltaText">
+    <span class="delta" [ngClass]="'delta--' + trend">
+      <mat-icon aria-hidden="true">{{ deltaIcon }}</mat-icon>
+      {{ deltaText }}
+    </span>
+    <span class="tile__delta-note" *ngIf="deltaNote">{{ deltaNote }}</span>
+  </div>
+
+  <p class="tile__note" *ngIf="note">{{ note }}</p>
+
+  <svg
+    class="tile__spark"
+    *ngIf="linePath"
+    [attr.viewBox]="'0 0 ' + sparkWidth + ' ' + sparkHeight"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path class="tile__spark-area" [attr.d]="areaPath" />
+    <path class="tile__spark-line" [attr.d]="linePath" />
+    <circle class="tile__spark-dot" [attr.cx]="lastX" [attr.cy]="lastY" r="2.6" />
+  </svg>
+</div>

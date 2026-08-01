@@ -1,4 +1,55 @@
+<a class="skip-link" href="#sadrzaj">Preskoči na sadržaj</a>
+
+<button
+  type="button"
+  class="theme-toggle no-print"
+  (click)="toggleTheme()"
+  [attr.aria-label]="isDark ? 'Uključi svijetlu temu' : 'Uključi tamnu temu'"
+  [title]="isDark ? 'Svijetla tema' : 'Tamna tema'"
+>
+  <mat-icon aria-hidden="true">{{ isDark ? "light_mode" : "dark_mode" }}</mat-icon>
+</button>
+
 <app-header></app-header>
-<div class="content" role="main">
+
+<main class="shell page" id="sadrzaj">
+  <!-- Jedan red filtera iznad svega što filtrira: kartice, grafikoni, tabela. -->
+  <app-filter-bar class="no-print"></app-filter-bar>
+
+  <app-stats></app-stats>
+
   <app-chart></app-chart>
-</div>
+
+  <app-table></app-table>
+</main>
+
+<footer class="footer">
+  <div class="shell footer__shell">
+    <div class="footer__block">
+      <p class="footer__title">Izvor podataka</p>
+      <p class="footer__text">
+        Institut za javno zdravlje Crne Gore —
+        <a href="https://www.ijzcg.me/" target="_blank" rel="noopener noreferrer"
+          >ijzcg.me</a
+        >
+      </p>
+    </div>
+
+    <div class="footer__block">
+      <p class="footer__title">Kod aplikacije</p>
+      <p class="footer__text">
+        <a
+          href="https://github.com/ilhankalac/covid-19-rozaje"
+          target="_blank"
+          rel="noopener noreferrer"
+          >github.com/ilhankalac/covid-19-rozaje</a
+        >
+      </p>
+    </div>
+
+    <div class="footer__block">
+      <p class="footer__title">Autor</p>
+      <p class="footer__text">Kalač Ilhan · {{ year }}</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,184 @@
+:host {
+  display: block;
+}
+
+.charts {
+  display: grid;
+  gap: var(--gap-4);
+}
+
+.chart-card {
+  padding: var(--gap-5);
+}
+
+.chart-card__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--gap-3) var(--gap-5);
+  margin-bottom: var(--gap-4);
+}
+
+/* Visina obuhvata i traku sa datumima, pa kartica nikad ne dobije
+   sopstveni scroll. */
+.chart-card__plot {
+  position: relative;
+  height: clamp(280px, 34vw, 380px);
+}
+
+.chart-card__plot--short {
+  height: clamp(190px, 22vw, 240px);
+}
+
+.chart-card__plot.is-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 180px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--r-md);
+}
+
+.chart-card__plot canvas {
+  display: block;
+}
+
+.chart-state {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-muted);
+  font-size: 0.875rem;
+  pointer-events: none;
+}
+
+/* --- Legenda ----------------------------------------------------------- */
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap-2);
+  font-size: 0.8125rem;
+  /* Tekst nosi tokene teksta; boju nosi ključ pored njega. */
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.legend__key {
+  display: inline-block;
+  width: 16px;
+  height: 2px;
+  border-radius: 2px;
+  flex: none;
+}
+
+/* Legenda prati oblik oznake: linija za linije, blok za stubiće. */
+.legend__key--block {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.legend__key--up {
+  background: var(--data-up);
+}
+
+.legend__key--down {
+  background: var(--data-down);
+}
+
+.legend__key--context {
+  background: var(--data-context);
+}
+
+/* --- Tooltip ----------------------------------------------------------- */
+
+.chart-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 168px;
+  padding: 10px 12px;
+  border-radius: var(--r-md);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-2);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 120ms var(--ease), transform 120ms var(--ease);
+  z-index: 4;
+}
+
+.chart-tip.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.chart-tip ::ng-deep .chart-tip__title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  margin-bottom: 6px;
+  white-space: nowrap;
+}
+
+.chart-tip ::ng-deep .chart-tip__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+/* Kratka crta u boji serije, ne pun kvadratić — na gustini tooltipa
+   kvadratić je previše mastila za posao oznake. */
+.chart-tip ::ng-deep .chart-tip__key {
+  width: 12px;
+  height: 2px;
+  border-radius: 2px;
+  flex: none;
+}
+
+.chart-tip ::ng-deep .chart-tip__label {
+  color: var(--ink-muted);
+}
+
+/* Vrijednost vodi: ona je ono zbog čega je čitalac prišao. */
+.chart-tip ::ng-deep .chart-tip__value {
+  margin-left: auto;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+@media (max-width: 640px) {
+  .chart-card {
+    padding: var(--gap-4);
+  }
+
+  .chart-card__head {
+    gap: var(--gap-3);
+  }
+
+  .chart-card__plot {
+    height: 260px;
+  }
+
+  .chart-card__plot--short {
+    height: 180px;
+  }
+}

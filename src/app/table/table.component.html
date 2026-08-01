@@ -1,92 +1,132 @@
-<div class="mat-elevation-z14 table" style="margin: 2%">
-  <h3 style="text-align: center">
-    Tabela promjena stanja nakon svakog presjeka
-  </h3>
-  <div fxLayout="row">
-    <div style="width: 100% !important; margin: 1%">
-      <mat-form-field class="search-form-field" style="width: 100% !important">
+<section class="card table-card">
+  <div class="table-card__head">
+    <div>
+      <h2 class="section-title">Svi presjeci</h2>
+      <p class="section-sub">
+        Kompletna tabela iza grafikona — svaka vrijednost je čitljiva i bez
+        prelaska mišem.
+      </p>
+    </div>
+
+    <div class="table-card__tools">
+      <div class="search">
+        <mat-icon class="search__icon" aria-hidden="true">search</mat-icon>
         <input
-          matInput
+          class="search__input"
+          type="search"
           [(ngModel)]="searchKey"
-          placeholder="Pretraga"
+          (input)="applyFilter()"
+          placeholder="Pretraga po datumu…"
           autocomplete="off"
-          (keyup)="applyFilter()"
+          aria-label="Pretraga presjeka"
         />
         <button
-          mat-button
+          type="button"
+          class="search__clear"
           *ngIf="searchKey"
-          matSuffix
-          mat-icon-button
-          aria-label="Clear"
-          (click)="searchKey = ''; applyFilter()"
+          (click)="clearFilter()"
+          aria-label="Poništi pretragu"
         >
           <mat-icon>close</mat-icon>
         </button>
-      </mat-form-field>
+      </div>
+
+      <button type="button" class="btn-ghost" (click)="exportCsv()">
+        <mat-icon aria-hidden="true">download</mat-icon>
+        CSV
+      </button>
     </div>
   </div>
 
-  <mat-table
-    [dataSource]="listData"
-    matSort
-    matSortActive="Name"
-    matSortDirection="asc"
-  >
-    <ng-container matColumnDef="Date">
-      <mat-header-cell *matHeaderCellDef> Datum </mat-header-cell>
-      <mat-cell *matCellDef="let element; let i = index">
-        <b style="font-size: smaller">{{ element?.date?.substring(0, 6) }} </b>
-      </mat-cell>
-    </ng-container>
+  <div class="table-scroll">
+    <table mat-table [dataSource]="listData" matSort matSortActive="date" matSortDirection="desc" class="data-table">
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Datum</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="cell-date">{{ row.dateLabel }}</span>
+          <span
+            class="cell-gap"
+            *ngIf="row.daysSincePrevious > 1"
+            [title]="'Razmak od ' + row.daysSincePrevious + ' dana do prethodnog presjeka'"
+          >
+            +{{ row.daysSincePrevious }}d
+          </span>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="activeCases">
-      <mat-header-cell *matHeaderCellDef mat-sort-header style="color: red">
-        <b> Aktivni slučajevi </b>
-      </mat-header-cell>
-      <mat-cell *matCellDef="let element" style="font-size: smaller">{{
-        element?.activeCases
-      }}</mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="activeCases">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="is-numeric">
+          Aktivni
+        </th>
+        <td mat-cell *matCellDef="let row" class="is-numeric is-strong">
+          {{ formatNumber(row.activeCases) }}
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="recovered">
-      <mat-header-cell *matHeaderCellDef mat-sort-header style="color: green">
-        <b> Oporavljeni </b>
-      </mat-header-cell>
-      <mat-cell *matCellDef="let element" style="font-size: smaller">{{
-        element?.recovered
-      }}</mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="change">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="is-numeric">
+          Promjena
+        </th>
+        <td mat-cell *matCellDef="let row" class="is-numeric">
+          <span class="delta" [ngClass]="'delta--' + trendClass(row.change)">
+            <mat-icon aria-hidden="true">{{ trendIcon(row.change) }}</mat-icon>
+            {{ formatSigned(row.change) }}
+          </span>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="deaths">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>
-        Umrli
-      </mat-header-cell>
-      <mat-cell *matCellDef="let element" style="font-size: smaller">{{
-        element?.deaths
-      }}</mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="average7">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="is-numeric">
+          Prosjek ({{ averageWindow }})
+        </th>
+        <td mat-cell *matCellDef="let row" class="is-numeric is-muted">
+          {{ formatNumber(row.average7, 1) }}
+        </td>
+      </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row
-      *matRowDef="let row; columns: displayedColumns"
-      style="cursor: pointer"
-      (click)="onSelectedRow(row.$key, $event)"
-    ></mat-row>
-  </mat-table>
+      <ng-container matColumnDef="recovered">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="is-numeric">
+          Oporavljeni
+        </th>
+        <td mat-cell *matCellDef="let row" class="is-numeric is-muted">
+          {{ formatNumber(row.recovered) }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="deaths">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="is-numeric">
+          Umrli
+        </th>
+        <td mat-cell *matCellDef="let row" class="is-numeric is-muted">
+          {{ formatNumber(row.deaths) }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <p class="table-empty" *ngIf="!isLoading && !listData.filteredData.length">
+      Nema presjeka koji odgovaraju pretrazi.
+    </p>
+
+    <div class="table-empty" *ngIf="isLoading">
+      <mat-progress-spinner
+        diameter="32"
+        strokeWidth="3"
+        mode="indeterminate"
+      ></mat-progress-spinner>
+    </div>
+  </div>
+
   <mat-paginator
-    [pageSizeOptions]="[5, 10, 25, 100]"
-    [pageSize]="5"
+    [pageSizeOptions]="[10, 25, 50, 100]"
+    [pageSize]="10"
     showFirstLastButtons
   ></mat-paginator>
-  <mat-card
-    *ngIf="isLoading"
-    style="display: flex; justify-content: center; align-items: center"
-  >
-    <mat-progress-spinner
-      color="primary"
-      mode="indeterminate"
-      *ngIf="isLoading"
-    >
-    </mat-progress-spinner>
-  </mat-card>
-</div>
+
+  <p class="table-note">
+    „—” znači da podatak nije objavljen. Institut za javno zdravlje CG prestao je
+    da objavljuje oporavljene i umrle po opštinama.
+  </p>
+</section>

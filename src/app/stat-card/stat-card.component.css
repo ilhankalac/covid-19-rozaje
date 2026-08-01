@@ -1,0 +1,115 @@
+:host {
+  display: block;
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--gap-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-1);
+  overflow: hidden;
+  transition: box-shadow 160ms var(--ease), transform 160ms var(--ease);
+}
+
+.tile:hover {
+  box-shadow: var(--shadow-2);
+  transform: translateY(-2px);
+}
+
+.tile__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--gap-2);
+}
+
+.tile__label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--ink-2);
+  line-height: 1.3;
+}
+
+.tile__icon {
+  flex: none;
+  color: var(--ink-muted);
+  font-size: 19px;
+  width: 19px;
+  height: 19px;
+  opacity: 0.8;
+}
+
+.tile__value {
+  /* Proporcionalne cifre: ovo je samostalan broj, ne kolona. */
+  font-size: 2.125rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-top: var(--gap-2);
+}
+
+.tile__unit {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--ink-muted);
+  margin-left: 2px;
+  letter-spacing: 0;
+}
+
+.tile__delta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--gap-2);
+  margin-top: var(--gap-2);
+}
+
+.tile__delta-note,
+.tile__note {
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  line-height: 1.35;
+}
+
+.tile__note {
+  margin-top: var(--gap-2);
+}
+
+/* margin-top:auto gura sparkline na dno kartice, pa su sve kartice u redu
+   iste visine bez obzira na dužinu teksta iznad. Negativne margine je puštaju
+   do same ivice; kartica bez sparkline zadrži normalan donji padding. */
+.tile__spark {
+  display: block;
+  width: calc(100% + var(--gap-4) * 2);
+  height: auto;
+  margin: auto calc(var(--gap-4) * -1) calc(var(--gap-4) * -1);
+  padding-top: var(--gap-4);
+  overflow: visible;
+}
+
+.tile__spark-line {
+  fill: none;
+  stroke: var(--data-context);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.tile__spark-area {
+  fill: var(--data-context);
+  opacity: 0.1;
+  stroke: none;
+}
+
+.tile__spark-dot {
+  fill: var(--data-up);
+  stroke: var(--surface);
+  stroke-width: 1.6;
+}
+

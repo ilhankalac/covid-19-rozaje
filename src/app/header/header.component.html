@@ -1,88 +1,89 @@
-<div style="background-color: #ef5350">
-  <br /><br />
+<header class="hero">
+  <img class="hero__map" src="assets/images/rozaje_map.png" alt="" aria-hidden="true" />
 
-  <div
-    style="
-      display: grid;
-      grid-template-columns: 1fr;
-      justify-content: center;
-      align-content: center;
-    "
-  >
-    <h1 style="color: white; text-align: center">
-      <span style="margin-top: 2% !important"> <mat-icon>info</mat-icon></span>
+  <div class="shell hero__shell" *ngIf="summary$ | async as summary; else loading">
+    <div class="hero__brand">
+      <img
+        class="hero__crest"
+        src="assets/images/Rozaje-grb.png"
+        alt="Grb Opštine Rožaje"
+      />
+      <div>
+        <h1 class="hero__town">Rožaje</h1>
+        <p class="hero__kicker">COVID-19 statistika Opštine Rožaje</p>
+      </div>
+    </div>
 
-      <span style="margin-left: 2%">
-        Ažuriranje COVID-19 informacija za Opštinu Rožaje</span
-      >
-    </h1>
-    <h1 style="color: white; text-align: center">
-      <span style="margin-left: 2%">
-        Prestaje se sa prikazom podataka o umrlim i oporavljenim slučajevima jer
-        ijzcg.me ne objavljuje više te podatke.</span
-      >
-    </h1>
+    <div class="hero__figure" *ngIf="summary.latest as latest">
+      <p class="hero__eyebrow">Presjek na dan {{ formatLongDate(latest.date) }}</p>
+
+      <p class="hero__value">{{ formatNumber(latest.activeCases) }}</p>
+      <p class="hero__label">aktivnih slučajeva</p>
+
+      <div class="hero__deltas">
+        <span class="hero__chip" *ngIf="summary.changeFromPrevious !== null">
+          <mat-icon aria-hidden="true">{{
+            trendOf(summary.changeFromPrevious) === "up"
+              ? "trending_up"
+              : trendOf(summary.changeFromPrevious) === "down"
+              ? "trending_down"
+              : "trending_flat"
+          }}</mat-icon>
+          {{ formatSigned(summary.changeFromPrevious) }}
+          <span class="hero__chip-note">od prethodnog presjeka</span>
+        </span>
+
+        <span class="hero__chip" *ngIf="summary.percentOfPeak !== null">
+          <mat-icon aria-hidden="true">landscape</mat-icon>
+          {{ formatNumber(summary.percentOfPeak) }}%
+          <span class="hero__chip-note">vrhunca epidemije</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="hero__meta">
+      <div class="hero__meta-item">
+        <span class="hero__meta-value">{{ formatNumber(summary.recordCount) }}</span>
+        <span class="hero__meta-label">presjeka u bazi</span>
+      </div>
+      <div class="hero__meta-item">
+        <span class="hero__meta-value">{{ formatNumber(summary.daysCovered) }}</span>
+        <span class="hero__meta-label">dana praćenja</span>
+      </div>
+      <div class="hero__meta-item" *ngIf="summary.first as first">
+        <span class="hero__meta-value hero__meta-value--sm">
+          {{ first.dateLabel }} — {{ summary.latest?.dateLabel }}
+        </span>
+        <span class="hero__meta-label">obuhvaćeni period</span>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #loading>
+    <div class="shell hero__shell hero__shell--loading">
+      <mat-progress-spinner
+        diameter="44"
+        strokeWidth="3"
+        mode="indeterminate"
+        class="hero__spinner"
+      ></mat-progress-spinner>
+      <p class="hero__loading-text">Učitavanje podataka…</p>
+    </div>
+  </ng-template>
+</header>
+
+<div class="shell" *ngIf="summary$ | async as summary">
+  <div class="notice" role="note" *ngIf="isStale(summary)">
+    <mat-icon class="notice__icon" aria-hidden="true">inventory_2</mat-icon>
+    <div>
+      <p class="notice__title">Arhivski podaci — {{ staleNotice(summary) }}</p>
+      <p class="notice__body">
+        Institut za javno zdravlje Crne Gore prestao je da objavljuje dnevne
+        presjeke po opštinama, pa se stranica više ne dopunjava. Podaci o
+        oporavljenim i umrlim slučajevima nedostaju nakon
+        {{ formatLongDate(summary.lastKnownRecovered?.date) }} i prikazani su kao
+        „—”. Sve ispod je kompletna arhiva onoga što je objavljeno.
+      </p>
+    </div>
   </div>
 </div>
-<mat-card style="background: #ef5350">
-  <div class="content" *ngIf="totalCases > 0">
-    <div>
-      <div class="row-data">
-        <img style="width: 50px" src="assets/images/Rozaje-grb.png" alt="map" />
-        <h1 style="color: white; font-size: xx-large">Rožaje</h1>
-      </div>
-      <div class="row-data">
-        <mat-icon>date_range</mat-icon>
-        <div>
-          <p style="font-size: large">Datum</p>
-          <p style="color: white; font-size: xx-large">
-            <b>{{ latestElement?.date }}</b>
-          </p>
-        </div>
-      </div>
-      <div class="row-data">
-        <mat-icon>sick</mat-icon>
-        <div>
-          <p style="font-size: large">Ukupno aktivnih</p>
-          <p style="color: white; font-size: xx-large">
-            <b>{{ latestElement?.activeCases }}</b>
-          </p>
-        </div>
-      </div>
-
-      <!-- Uncomment this if the ijzcg.me brings data back -->
-      <!-- <div class="row-data">
-        <mat-icon>local_hospital</mat-icon>
-        <div>
-          <p style="font-size: large">Ukupno oporavljenih</p>
-          <p style="color: white; font-size: xx-large">
-            <b>{{ latestElement?.recovered }}</b>
-          </p>
-        </div>
-      </div>
-      <div class="row-data">
-        <mat-icon>close</mat-icon>
-        <div>
-          <p style="font-size: large">Umrlih</p>
-          <p style="color: white; font-size: xx-large">
-            <b>{{ latestElement?.deaths }}</b>
-          </p>
-        </div>
-      </div>
-      <div class="row-data">
-        <mat-icon>masks</mat-icon>
-        <div>
-          <p style="font-size: x-large">Ukupno zaraženih</p>
-          <p style="color: white; font-size: xxx-large">
-            <b> Nepoznato </b>
-          </p>
-        </div>
-      </div> -->
-    </div>
-
-    <div>
-      <img class="map-img" src="assets/images/rozaje_map.png" alt="map" />
-    </div>
-  </div>
-  <mat-spiner *ngIf="totalCases == 0"></mat-spiner>
-</mat-card>

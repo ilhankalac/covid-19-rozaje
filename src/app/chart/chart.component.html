@@ -1,45 +1,75 @@
-<div
-  class="chart-container"
-  style="position: relative; height: 40vh; width: 80vw"
->
-  <div style="text-align: center">
-    <mat-form-field>
-      <mat-label>Odaberi period</mat-label>
-      <mat-select (selectionChange)="filterByMonth($event)">
-        <mat-option value="Sve"> Sve </mat-option>
+<div class="charts">
+  <!-- Kretanje ------------------------------------------------------------->
+  <section class="card chart-card">
+    <div class="chart-card__head">
+      <div>
+        <h2 class="section-title">Kretanje aktivnih slučajeva</h2>
+        <p class="section-sub">
+          Broj aktivnih slučajeva na dan svakog objavljenog presjeka.
+        </p>
+      </div>
 
-        <mat-option *ngFor="let months of monthsAvailable" [value]="months">
-          {{ months }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div style="margin-left: 45%">
-    <mat-progress-spinner
-      color="primary"
-      mode="indeterminate"
-      *ngIf="isLoading"
-    >
-    </mat-progress-spinner>
-  </div>
-  <canvas id="myChart" style="margin: 0 auto"> </canvas>
+      <!-- Dvije serije: legenda je uvijek prisutna, identitet nikad ne nosi
+           samo boja. -->
+      <ul class="legend" aria-label="Legenda">
+        <li class="legend__item">
+          <span class="legend__key legend__key--up" aria-hidden="true"></span>
+          Aktivni slučajevi
+        </li>
+        <li class="legend__item">
+          <span class="legend__key legend__key--context" aria-hidden="true"></span>
+          Prosjek kroz {{ averageWindow }} presjeka
+        </li>
+      </ul>
+    </div>
 
-  <!-- <div style="text-align: center">
-    <button (click)="insertNewData()" mat-raised-button>Fetch</button>
-  </div> -->
-  <br />
-  <app-table [dataFromDatabase]="dataFromFirebase"></app-table>
-  <p style="text-align: center">
-    Podaci su preuzeti sa
-    <a href="https://www.ijzcg.me/" target="_blank">https://www.ijzcg.me/</a>
-  </p>
-  <p style="text-align: center">
-    <b>
-      Kod aplikacije:
-      <a href="https://github.com/ilhankalac/covid-19-rozaje" target="_blank"
-        >github.com/ilhankalac/covid-19-rozaje</a
-      >
-    </b>
-  </p>
-  <p style="text-align: center; padding: 2%"><b> Autor: Kalač Ilhan</b></p>
+    <div class="chart-card__plot" [class.is-empty]="!hasData">
+      <canvas #trendCanvas *ngIf="hasData" aria-label="Grafikon kretanja aktivnih slučajeva" role="img"></canvas>
+      <div class="chart-tip" #trendTooltip></div>
+
+      <div class="chart-state" *ngIf="isLoading">
+        <mat-progress-spinner
+          diameter="36"
+          strokeWidth="3"
+          mode="indeterminate"
+        ></mat-progress-spinner>
+      </div>
+      <p class="chart-state" *ngIf="!isLoading && !hasData">
+        Za izabrani period nema podataka.
+      </p>
+    </div>
+  </section>
+
+  <!-- Dnevna promjena ------------------------------------------------------>
+  <section class="card chart-card">
+    <div class="chart-card__head">
+      <div>
+        <h2 class="section-title">Promjena između presjeka</h2>
+        <p class="section-sub">
+          Koliko je aktivnih slučajeva pribavljeno ili skinuto u odnosu na
+          prethodni objavljeni presjek.
+        </p>
+      </div>
+
+      <ul class="legend" aria-label="Legenda">
+        <li class="legend__item">
+          <span class="legend__key legend__key--up legend__key--block" aria-hidden="true"></span>
+          Porast
+        </li>
+        <li class="legend__item">
+          <span class="legend__key legend__key--down legend__key--block" aria-hidden="true"></span>
+          Pad
+        </li>
+      </ul>
+    </div>
+
+    <div class="chart-card__plot chart-card__plot--short" [class.is-empty]="!hasData">
+      <canvas #changeCanvas *ngIf="hasData" aria-label="Grafikon dnevnih promjena" role="img"></canvas>
+      <div class="chart-tip" #changeTooltip></div>
+
+      <p class="chart-state" *ngIf="!isLoading && !hasData">
+        Za izabrani period nema podataka.
+      </p>
+    </div>
+  </section>
 </div>

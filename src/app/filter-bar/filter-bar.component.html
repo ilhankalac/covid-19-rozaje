@@ -1,0 +1,41 @@
+<div class="filters" *ngIf="selection$ | async as selection">
+  <div class="filters__group" role="group" aria-label="Period prikaza">
+    <span class="filters__legend">Period</span>
+
+    <div class="segmented">
+      <button
+        type="button"
+        class="segmented__btn"
+        *ngFor="let range of ranges"
+        [class.is-active]="selection === range.id"
+        [attr.aria-pressed]="selection === range.id"
+        (click)="select(range.id)"
+      >
+        {{ range.label }}
+      </button>
+    </div>
+
+    <label class="filters__month">
+      <span class="visually-hidden">Izaberi mjesec</span>
+      <select
+        class="select"
+        [value]="monthValue(selection)"
+        (change)="onMonthChange($any($event.target).value)"
+      >
+        <option value="" disabled>Mjesec…</option>
+        <option *ngFor="let month of months$ | async" [value]="month.id">
+          {{ month.label }}
+        </option>
+      </select>
+      <mat-icon class="filters__month-icon" aria-hidden="true">expand_more</mat-icon>
+    </label>
+  </div>
+
+  <p class="filters__scope" *ngIf="scope$ | async as scope" aria-live="polite">
+    <ng-container *ngIf="scope.count; else noScope">
+      Prikazano <strong>{{ formatNumber(scope.count) }}</strong> presjeka ·
+      {{ formatLongDate(scope.from) }} — {{ formatLongDate(scope.to) }}
+    </ng-container>
+    <ng-template #noScope>Nema presjeka u izabranom periodu.</ng-template>
+  </p>
+</div>
