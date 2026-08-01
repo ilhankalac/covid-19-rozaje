@@ -20,8 +20,8 @@
   margin-bottom: var(--gap-4);
 }
 
-/* Visina obuhvata i traku sa datumima, pa kartica nikad ne dobije
-   sopstveni scroll. */
+/* The height includes the date strip, so the card never gets a scrollbar of
+   its own. */
 .chart-card__plot {
   position: relative;
   height: clamp(280px, 34vw, 380px);
@@ -71,7 +71,7 @@
   align-items: center;
   gap: var(--gap-2);
   font-size: 0.8125rem;
-  /* Tekst nosi tokene teksta; boju nosi ključ pored njega. */
+  /* The text carries the text tokens; the swatch beside it carries the colour. */
   color: var(--ink-2);
   white-space: nowrap;
 }
@@ -84,7 +84,7 @@
   flex: none;
 }
 
-/* Legenda prati oblik oznake: linija za linije, blok za stubiće. */
+/* The legend follows the mark's shape: a line for lines, a block for bars. */
 .legend__key--block {
   width: 12px;
   height: 12px;
@@ -144,8 +144,8 @@
   white-space: nowrap;
 }
 
-/* Kratka crta u boji serije, ne pun kvadratić — na gustini tooltipa
-   kvadratić je previše mastila za posao oznake. */
+/* A short dash in the series colour, not a filled square — at the tooltip's
+   density a square is too much ink for the job of a label. */
 .chart-tip ::ng-deep .chart-tip__key {
   width: 12px;
   height: 2px;
@@ -157,7 +157,7 @@
   color: var(--ink-muted);
 }
 
-/* Vrijednost vodi: ona je ono zbog čega je čitalac prišao. */
+/* The value leads: it is what the reader came for. */
 .chart-tip ::ng-deep .chart-tip__value {
   margin-left: auto;
   font-weight: 600;

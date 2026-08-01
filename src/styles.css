@@ -1,13 +1,13 @@
 /* ==========================================================================
-   COVID-19 Rožaje — globalni stilovi i design tokeni
-   Paleta za grafikone validirana skriptom validate_palette.js
-   (CVD ΔE, kontrast i opseg svjetline prolaze u light i dark modu).
+   COVID-19 Rožaje — global styles and design tokens
+   The chart palette was validated with the validate_palette.js script
+   (CVD ΔE, contrast and lightness range pass in both light and dark mode).
    ========================================================================== */
 
 :root {
   color-scheme: light;
 
-  /* --- Brend (crvena iz originalnog dizajna, dotjerana u rampu) --------- */
+  /* --- Brand (the red from the original design, tuned into a ramp) ------ */
   --brand-50: #fff4f3;
   --brand-100: #ffe3e1;
   --brand-200: #ffc7c4;
@@ -19,16 +19,16 @@
   --brand-800: #7d201f;
   --brand-900: #4d1413;
 
-  /* Zaglavlje ima svoje tokene i namjerno izgleda isto u oba moda: to je
-     brend traka, a bijela mapa i tekst na njoj traže punu crvenu podlogu.
-     Boje podataka se u dark modu posvjetljuju radi kontrasta na tamnoj
-     podlozi, pa se zaglavlje ne smije oslanjati na njih. */
+  /* The header has its own tokens and deliberately looks the same in both
+     modes: it is the brand bar, and the white map and text on it need a full
+     red background. Data colours are lightened in dark mode for contrast on a
+     dark surface, so the header must not rely on them. */
   --hero-from: #8f2523;
   --hero-mid: #d33f3d;
   --hero-to: #ef5350;
   --hero-line: rgba(255, 255, 255, 0.28);
 
-  /* --- Podloge i tekst -------------------------------------------------- */
+  /* --- Surfaces and text ------------------------------------------------ */
   --page: #f4f4f1;
   --surface: #ffffff;
   --surface-2: #fbfbf9;
@@ -45,19 +45,19 @@
   --grid: #e1e0d9;
   --axis: #c3c2b7;
 
-  /* --- Boje podataka (validirana paleta) -------------------------------- */
-  --data-up: #e34948; /* porast — crvena */
+  /* --- Data colours (validated palette) --------------------------------- */
+  --data-up: #e34948; /* rise — red */
   --data-up-soft: rgba(227, 73, 72, 0.14);
-  --data-down: #2a78d6; /* pad — plava */
+  --data-down: #2a78d6; /* fall — blue */
   --data-down-soft: rgba(42, 120, 214, 0.14);
-  --data-context: #898781; /* 7-dnevni prosjek — de-emfaza */
+  --data-context: #898781; /* 7-day average — de-emphasis */
 
-  /* --- Sjenke ----------------------------------------------------------- */
+  /* --- Shadows ---------------------------------------------------------- */
   --shadow-1: 0 1px 2px rgba(11, 11, 11, 0.06), 0 1px 3px rgba(11, 11, 11, 0.04);
   --shadow-2: 0 2px 4px rgba(11, 11, 11, 0.05), 0 8px 24px rgba(11, 11, 11, 0.07);
   --shadow-hero: 0 12px 32px rgba(125, 32, 31, 0.22);
 
-  /* --- Geometrija i tipografija ----------------------------------------- */
+  /* --- Geometry and typography ------------------------------------------ */
   --r-sm: 8px;
   --r-md: 12px;
   --r-lg: 16px;
@@ -80,7 +80,7 @@
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* --- Dark mode: birane vrijednosti, ne automatski obrnut light ---------- */
+/* --- Dark mode: chosen values, not an automatically inverted light ------ */
 @media (prefers-color-scheme: dark) {
   :root:where(:not([data-theme="light"])) {
     color-scheme: dark;
@@ -208,8 +208,8 @@ a:focus-visible {
   border-radius: 4px;
 }
 
-/* Brojevi koji se poravnavaju u kolonama (tabele, ose). Veliki samostalni
-   brojevi namjerno koriste proporcionalne cifre. */
+/* Numbers that line up in columns (tables, axes). Large standalone numbers
+   deliberately use proportional figures. */
 .tabular {
   font-variant-numeric: tabular-nums;
 }
@@ -227,7 +227,7 @@ a:focus-visible {
 }
 
 /* ==========================================================================
-   Zajednički gradivni elementi
+   Shared building blocks
    ========================================================================== */
 
 .shell {
@@ -271,7 +271,7 @@ a:focus-visible {
   color: var(--ink-muted);
 }
 
-/* Delta čip: boja + strelica + znak — nikad samo boja. */
+/* Delta chip: colour + arrow + sign — never colour alone. */
 .delta {
   display: inline-flex;
   align-items: center;
@@ -307,7 +307,7 @@ a:focus-visible {
 }
 
 /* ==========================================================================
-   Angular Material — usklađivanje sa tokenima
+   Angular Material — aligning with the tokens
    ========================================================================== */
 
 .mat-typography,
@@ -394,7 +394,7 @@ a:focus-visible {
 }
 
 /* ==========================================================================
-   Kretanje
+   Motion
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {

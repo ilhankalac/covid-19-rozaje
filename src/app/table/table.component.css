@@ -154,8 +154,9 @@
   background: var(--surface-sunken);
 }
 
-/* Vrsta mjere uz naziv kolone: „na taj dan” vs „ukupno”. Tiša je od naziva,
-   da zaglavlje ostane pregledno, ali je uvijek vidljiva — ne samo u title-u. */
+/* The kind of measure beside the column name: "na taj dan" vs "ukupno".
+   Quieter than the name so the header stays scannable, but always visible —
+   not only in a title attribute. */
 .th-note {
   display: block;
   font-weight: 400;
@@ -165,7 +166,7 @@
   line-height: 1.2;
 }
 
-/* Kolone brojeva se poravnavaju vertikalno — ovdje tabular cifre imaju smisla. */
+/* Columns of numbers line up vertically — tabular figures make sense here. */
 .is-numeric {
   text-align: right;
   font-variant-numeric: tabular-nums;
@@ -190,7 +191,7 @@
   font-weight: 500;
 }
 
-/* Baza ima rupe u datumima; oznaka kaže koliko dana je preskočeno. */
+/* The database has gaps in the dates; the badge says how many days were skipped. */
 .cell-gap {
   display: inline-block;
   margin-left: 6px;
@@ -206,8 +207,8 @@
   font-size: 0.8125rem;
 }
 
-/* Prenesen kumulativni zbir („≥ 41”): isprekidana donja linija ga razlikuje
-   od objavljene vrijednosti, a da ne viče. */
+/* A carried cumulative total ("≥ 41"): a dashed underline sets it apart from a
+   published value without shouting. */
 .cell-carried {
   border-bottom: 1px dashed var(--border-strong);
   cursor: help;
@@ -247,7 +248,7 @@
     width: 100%;
   }
 
-  /* Sporedne kolone otpadaju prije nego što tabela počne da se stiska. */
+  /* Secondary columns drop out before the table starts to squeeze. */
   .mat-column-recovered,
   .mat-column-deaths {
     display: none;

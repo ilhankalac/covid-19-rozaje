@@ -6,8 +6,8 @@ import { formatLongDate, formatNumber } from '../core/stats';
 import { DataService, RANGE_OPTIONS } from '../data.service';
 
 /**
- * Jedan red filtera iznad svega što filtrira. Kartice, grafikoni i tabela
- * gledaju isti isječak, pa se brojke nikad ne razilaze.
+ * One row of filters above everything it filters. Cards, charts and table all
+ * look at the same slice, so the figures never drift apart.
  */
 @Component({
   selector: 'app-filter-bar',
@@ -19,7 +19,7 @@ export class FilterBarComponent {
   readonly months$ = this.dataService.months$;
   readonly selection$ = this.dataService.selection$;
 
-  /** Opseg izabranog isječka — čitaocu govori šta tačno gleda. */
+  /** The span of the selected slice — tells the reader exactly what they are looking at. */
   readonly scope$ = combineLatest([
     this.dataService.visibleRows$,
     this.dataService.selection$,
@@ -47,7 +47,7 @@ export class FilterBarComponent {
     }
   }
 
-  /** Vrijednost mjesečnog izbornika je prazna dok je aktivan neki preset. */
+  /** The month picker's value is empty while a preset is active. */
   monthValue(selection: string): string {
     return this.ranges.some((range) => range.id === selection) ? '' : selection;
   }

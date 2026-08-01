@@ -15,8 +15,8 @@ import {
 import { DataService } from '../data.service';
 
 /**
- * Tabela svih presjeka. Ujedno je i pristupačna alternativa grafikonima —
- * svaka vrijednost sa grafikona ovdje se može pročitati bez prelaska mišem.
+ * The table of every snapshot. It doubles as the accessible alternative to the
+ * charts — every value on a chart can be read here without hovering.
  */
 @Component({
   selector: 'app-table',
@@ -54,8 +54,8 @@ export class TableComponent implements AfterViewInit, OnDestroy {
     this.listData.paginator = this.paginator;
     this.listData.sort = this.matSort;
 
-    // Sortiranje po datumu mora ići preko ISO ključa; string "08.09.2021."
-    // se leksikografski poredi pogrešno.
+    // Sorting by date has to go through the ISO key; the string "08.09.2021."
+    // compares wrongly lexicographically.
     this.listData.sortingDataAccessor = (row, column) => {
       switch (column) {
         case 'date':
@@ -64,8 +64,8 @@ export class TableComponent implements AfterViewInit, OnDestroy {
           return row.change === null ? Number.NEGATIVE_INFINITY : row.change;
         case 'average7':
           return row.average7 === null ? Number.NEGATIVE_INFINITY : row.average7;
-        // Sortira se po prenesenom zbiru, da redovi bez objavljenog podatka
-        // ne padnu na dno kao da su nula.
+        // Sorted by the carried total, so rows without a published value do
+        // not sink to the bottom as if they were zero.
         case 'recovered':
           return row.recoveredToDate === null
             ? Number.NEGATIVE_INFINITY
@@ -86,7 +86,7 @@ export class TableComponent implements AfterViewInit, OnDestroy {
 
     this.subscriptions.add(
       this.dataService.visibleRows$.subscribe((rows) => {
-        // Najnovije prvo — čitaoca prvo zanima posljednje stanje.
+        // Newest first — the reader wants the latest state before anything else.
         this.listData.data = rows.slice().reverse();
         this.isLoading = false;
         if (this.paginator) {
@@ -116,7 +116,7 @@ export class TableComponent implements AfterViewInit, OnDestroy {
     return trendOf(value);
   }
 
-  /** Objašnjava zašto uz broj stoji „≥”: zbir je prenesen, nije objavljen. */
+  /** Explains why a number carries "≥": the total was carried forward, not published. */
   carriedTitle(value: number | null, what: string): string {
     return `Najmanje ${formatNumber(value)} ${what} — posljednji objavljeni zbir. Izvor poslije toga nije objavljivao ovaj podatak, a kumulativni zbir ne može da opadne.`;
   }
@@ -132,16 +132,16 @@ export class TableComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  /** Izvozi tačno ono što je trenutno u tabeli, uključujući filter i pretragu. */
+  /** Exports exactly what is in the table right now, filter and search included. */
   exportCsv(): void {
     const rows = this.listData.sortData(
       this.listData.filteredData,
       this.listData.sort
     );
 
-    // Zaglavlja govore i vrstu mjere: aktivni su stanje na dan, oporavljeni i
-    // umrli su kumulativni zbirovi, a promjena zavisi od razmaka do prethodnog
-    // presjeka — zato razmak ide kao zasebna kolona.
+    // The headers also state the kind of measure: active is the level on the
+    // day, recoveries and deaths are cumulative totals, and the change depends
+    // on the gap to the previous snapshot — hence the gap as its own column.
     const header = [
       'Datum',
       'Aktivni (na taj dan)',
@@ -154,9 +154,9 @@ export class TableComponent implements AfterViewInit, OnDestroy {
       'Umrli (ukupno, najmanje)',
     ];
 
-    // Objavljena i prenesena vrijednost idu u zasebne kolone: ko obrađuje
-    // izvoz mora moći da razlikuje šta je izvor stvarno rekao od donje granice
-    // koju smo izveli.
+    // Published and carried values go into separate columns: whoever processes
+    // the export has to be able to tell what the source actually said from the
+    // lower bound we derived.
     const body = rows.map((row) => [
       row.dateLabel,
       csvValue(row.activeCases),
@@ -173,7 +173,7 @@ export class TableComponent implements AfterViewInit, OnDestroy {
       .map((line) => line.map(escapeCsv).join(','))
       .join('\r\n');
 
-    // BOM da Excel prepozna UTF-8 i ispravno prikaže č, ć, š, ž, đ.
+    // A BOM so Excel detects UTF-8 and renders č, ć, š, ž, đ correctly.
     const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');

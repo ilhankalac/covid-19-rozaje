@@ -19,7 +19,7 @@ import {
 import { ThemeService } from '../core/theme.service';
 import { DataService } from '../data.service';
 
-/** Iznad ovoliko tačaka pojedinačne tačke na liniji postaju šum. */
+/** Above this many points, individual dots on the line become noise. */
 const POINT_LIMIT = 60;
 const MAX_BAR_THICKNESS = 24;
 
@@ -59,7 +59,7 @@ export class ChartComponent implements AfterViewInit, OnDestroy {
       })
     );
 
-    // Boje se čitaju iz CSS-a, pa se pri promjeni teme grafikoni crtaju ponovo.
+    // Colours are read from CSS, so the charts are redrawn whenever the theme changes.
     this.subscriptions.add(
       this.themeService.choice$.subscribe(() => {
         this.theme = readChartTheme();
@@ -95,7 +95,7 @@ export class ChartComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    // Platno je iza *ngIf-a, pa se crta tek pošto Angular osvježi prikaz.
+    // The canvas sits behind an *ngIf, so it is drawn only after Angular refreshes the view.
     setTimeout(() => {
       if (!this.rows.length || !this.trendCanvas || !this.changeCanvas) {
         return;
@@ -106,7 +106,7 @@ export class ChartComponent implements AfterViewInit, OnDestroy {
   }
 
   /* -----------------------------------------------------------------------
-     Grafikon 1 — kretanje aktivnih slučajeva
+     Chart 1 — trend of active cases
      ----------------------------------------------------------------------- */
 
   private renderTrend(): void {
@@ -150,7 +150,7 @@ export class ChartComponent implements AfterViewInit, OnDestroy {
             pointRadius: showPoints ? 3 : 0,
             pointHoverRadius: 5,
             pointBackgroundColor: this.theme.up,
-            // 2px prsten u boji podloge drži tačku čitljivom preko linije.
+            // A 2px ring in the background colour keeps the point readable over the line.
             pointBorderColor: this.theme.surface,
             pointBorderWidth: 2,
             pointHitRadius: 24,
@@ -182,7 +182,7 @@ export class ChartComponent implements AfterViewInit, OnDestroy {
   }
 
   /* -----------------------------------------------------------------------
-     Grafikon 2 — dnevna promjena (divergentni stubići)
+     Chart 2 — daily change (diverging bars)
      ----------------------------------------------------------------------- */
 
   private renderChange(): void {
@@ -214,7 +214,7 @@ export class ChartComponent implements AfterViewInit, OnDestroy {
             data: changes,
             backgroundColor: colors,
             borderWidth: 0,
-            // Tanki stubići sa razmakom u boji podloge, nikad puna traka.
+            // Thin bars separated by the background colour, never a solid block.
             maxBarThickness: MAX_BAR_THICKNESS,
             categoryPercentage: 0.9,
             barPercentage: 0.86,
@@ -234,7 +234,7 @@ export class ChartComponent implements AfterViewInit, OnDestroy {
   }
 
   /* -----------------------------------------------------------------------
-     Zajedničke opcije
+     Shared options
      ----------------------------------------------------------------------- */
 
   private baseOptions(
@@ -296,10 +296,10 @@ export class ChartComponent implements AfterViewInit, OnDestroy {
   }
 
   /* -----------------------------------------------------------------------
-     Dodaci za crtanje
+     Drawing plugins
      ----------------------------------------------------------------------- */
 
-  /** Vertikalna nit koja prati pokazivač — čitalac cilja datum, ne liniju. */
+  /** A vertical thread following the pointer — the reader aims at a date, not the line. */
   private crosshairPlugin(): any {
     const color = this.theme.axis;
 
@@ -326,7 +326,7 @@ export class ChartComponent implements AfterViewInit, OnDestroy {
     };
   }
 
-  /** Direktna oznaka na vrhuncu — jedina brojka ispisana na samom grafikonu. */
+  /** A direct label on the peak — the only figure printed on the chart itself. */
   private peakPlugin(): any {
     const theme = this.theme;
 
@@ -352,7 +352,7 @@ export class ChartComponent implements AfterViewInit, OnDestroy {
 
         const width = ctx.measureText(text).width + 16;
         const height = 20;
-        // Oznaka se drži unutar površine grafikona, da tekst nigdje ne isteče.
+        // The label is kept inside the chart area so the text never overflows.
         const x = Math.min(
           Math.max(point._view.x - width / 2, area.left),
           area.right - width
@@ -402,7 +402,7 @@ export class ChartComponent implements AfterViewInit, OnDestroy {
   }
 
   /* -----------------------------------------------------------------------
-     Tooltip — vrijednost vodi, oznaka serije je sporedna
+     Tooltip — the value leads, the series label is secondary
      ----------------------------------------------------------------------- */
 
   private renderTooltip(
@@ -465,7 +465,7 @@ export class ChartComponent implements AfterViewInit, OnDestroy {
     element.style.top = `${Math.max(model.caretY - 16, 4)}px`;
   }
 
-  /** Kratka crta u boji serije umjesto punog kvadratića. */
+  /** A short dash in the series colour instead of a filled square. */
   private tooltipRow(color: string | null, label: string, value: string): HTMLElement {
     const row = document.createElement('p');
     row.className = 'chart-tip__row';
@@ -493,7 +493,7 @@ export class ChartComponent implements AfterViewInit, OnDestroy {
   }
 
   /* -----------------------------------------------------------------------
-     Pomoćno
+     Helpers
      ----------------------------------------------------------------------- */
 
   private peakIndex(): number {
@@ -510,7 +510,7 @@ export class ChartComponent implements AfterViewInit, OnDestroy {
     return index;
   }
 
-  /** "08.09." — puni datum stoji u tooltipu, osa ostaje prozračna. */
+  /** "08.09." — the full date lives in the tooltip, the axis stays airy. */
   private shortLabel(row: DailyStatRow): string {
     const day = `${row.date.getDate()}`.padStart(2, '0');
     const month = `${row.date.getMonth() + 1}`.padStart(2, '0');

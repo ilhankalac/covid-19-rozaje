@@ -6,9 +6,9 @@ export type ThemeChoice = 'system' | 'light' | 'dark';
 const STORAGE_KEY = 'covid19rozaje.theme';
 
 /**
- * Tema se pamti kao izbor korisnika, a "system" prati podešavanje uređaja.
- * Grafikoni ne mogu da čitaju CSS promjenljive kroz canvas, pa se pretplaćuju
- * na `changes$` i ponovo uzmu boje kad se tema promijeni.
+ * The theme is remembered as the user's choice, while "system" follows the
+ * device setting. Charts cannot read CSS variables through canvas, so they
+ * subscribe to `changes$` and re-read the colours when the theme changes.
  */
 @Injectable({
   providedIn: 'root',
@@ -35,7 +35,7 @@ export class ThemeService {
     }
   }
 
-  /** Tema koja je stvarno na ekranu, nakon razrješenja "system". */
+  /** The theme actually on screen, after resolving "system". */
   get resolved(): 'light' | 'dark' {
     if (this.choice.value !== 'system') {
       return this.choice.value;
@@ -48,7 +48,7 @@ export class ThemeService {
     try {
       localStorage.setItem(STORAGE_KEY, choice);
     } catch {
-      /* privatni režim — izbor važi samo za ovu sesiju */
+      /* private mode — the choice only holds for this session */
     }
     this.choice.next(choice);
   }
@@ -73,7 +73,7 @@ export class ThemeService {
         return stored;
       }
     } catch {
-      /* nedostupan localStorage */
+      /* localStorage unavailable */
     }
     return 'system';
   }

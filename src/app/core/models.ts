@@ -1,4 +1,4 @@
-/** Jedan presjek stanja, onako kako stoji u Firebase bazi. */
+/** A single snapshot, exactly as it is stored in the Firebase database. */
 export interface RawDailyStatistic {
   activeCases?: number | string;
   recovered?: number | string;
@@ -6,85 +6,85 @@ export interface RawDailyStatistic {
   date?: string;
 }
 
-/** Normalizovan presjek — datum je pravi Date, brojevi su brojevi ili null. */
+/** Normalized snapshot — the date is a real Date, numbers are numbers or null. */
 export interface DailyStat {
   key: string;
-  /** Ponoć lokalnog dana na koji se presjek odnosi. */
+  /** Local midnight of the day the snapshot refers to. */
   date: Date;
-  /** Original iz baze, npr. "08.09.2021." */
+  /** The original from the database, e.g. "08.09.2021." */
   dateLabel: string;
-  /** Sortabilni ključ, npr. "2021-09-08". */
+  /** Sortable key, e.g. "2021-09-08". */
   iso: string;
   activeCases: number | null;
   recovered: number | null;
   deaths: number | null;
 }
 
-/** Presjek obogaćen izvedenim vrijednostima koje se računaju nad cijelim nizom. */
+/** A snapshot enriched with values derived across the whole series. */
 export interface DailyStatRow extends DailyStat {
-  /** Promjena aktivnih u odnosu na prethodni presjek. */
+  /** Change in active cases against the previous snapshot. */
   change: number | null;
-  /** Broj dana između ovog i prethodnog presjeka (baza ima rupe). */
+  /** Days between this and the previous snapshot (the database has gaps). */
   daysSincePrevious: number | null;
-  /** Klizni prosjek aktivnih kroz 7 presjeka. */
+  /** Rolling average of active cases across 7 snapshots. */
   average7: number | null;
 
   /**
-   * Umrli i oporavljeni su kumulativni zbirovi, pa ne mogu pasti. Kad izvor
-   * prestane da ih objavljuje, posljednji poznati zbir i dalje važi kao donja
-   * granica — zato se prenosi naprijed umjesto da se prikaže kao nepoznat.
+   * Deaths and recoveries are cumulative totals, so they cannot fall. Once the
+   * source stops publishing them, the last known total still holds as a lower
+   * bound — which is why it is carried forward instead of shown as unknown.
    */
   deathsToDate: number | null;
   recoveredToDate: number | null;
-  /** true kad vrijednost nije objavljena za taj dan nego prenesena iz ranijeg. */
+  /** True when the value was not published that day but carried from an earlier one. */
   deathsCarried: boolean;
   recoveredCarried: boolean;
 }
 
 export type Trend = 'up' | 'down' | 'flat';
 
-/** Sve što naslovni dio i kartice prikazuju, izračunato jednom. */
+/** Everything the hero section and the cards display, computed once. */
 export interface Summary {
   latest: DailyStatRow | null;
   previous: DailyStatRow | null;
   first: DailyStatRow | null;
 
-  /** Promjena aktivnih u odnosu na prethodni presjek. */
+  /** Change in active cases against the previous snapshot. */
   changeFromPrevious: number | null;
-  /** Promjena aktivnih u odnosu na presjek od prije ~7 dana. */
+  /** Change in active cases against the snapshot from roughly 7 days earlier. */
   change7d: number | null;
   change7dPercent: number | null;
 
   average7: number | null;
-  /** Prosjek aktivnih kroz sve presjeke u opsegu. */
+  /** Average of active cases across every snapshot in the range. */
   averageAll: number | null;
 
   peak: DailyStatRow | null;
-  /** Najniže zabilježeno stanje u opsegu. */
+  /** Lowest level recorded within the range. */
   low: DailyStatRow | null;
-  /** Stanje na kraju opsega u odnosu na stanje na početku. */
+  /** Level at the end of the range against the level at its start. */
   totalChange: number | null;
-  /** Stanje na kraju opsega kao procenat vrhunca. */
+  /** Level at the end of the range as a percentage of the peak. */
   percentOfPeak: number | null;
 
-  /** Najveći zabilježeni skok i pad između dva uzastopna presjeka. */
+  /** Largest recorded rise and fall between two consecutive snapshots. */
   biggestRise: DailyStatRow | null;
   biggestDrop: DailyStatRow | null;
 
-  /** Posljednji presjek u kojem su oporavljeni/umrli još objavljivani. */
+  /** Last snapshot in which recoveries/deaths were still being published. */
   lastKnownRecovered: DailyStatRow | null;
   lastKnownDeaths: DailyStatRow | null;
 
   recordCount: number;
   daysCovered: number;
-  /** Dana od posljednjeg presjeka do danas — arhiva ili živi podaci. */
+  /** Days from the last snapshot until today — archive or live data. */
   daysSinceUpdate: number;
 }
 
-/** Opseg koji filter traka postavlja nad svim prikazima ispod nje. */
+/** The range the filter bar imposes on every view below it. */
 export interface RangeOption {
   id: string;
   label: string;
-  /** Broj dana unazad od posljednjeg presjeka; null znači cijeli period. */
+  /** Days back from the last snapshot; null means the whole period. */
   days: number | null;
 }

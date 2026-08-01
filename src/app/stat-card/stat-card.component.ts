@@ -8,9 +8,9 @@ const SPARK_HEIGHT = 32;
 const SPARK_PADDING = 3;
 
 /**
- * Kartica sa jednom brojkom: oznaka, vrijednost, opciona promjena i opciona
- * sparkline linija. Sparkline je u de-emfaznoj sivoj, a posljednja tačka u
- * akcentu — linija je kontekst, tačka je „gdje smo sada”.
+ * A card with a single figure: label, value, an optional change and an optional
+ * sparkline. The sparkline is in de-emphasised grey with the last point in the
+ * accent colour — the line is context, the point is "where we are now".
  */
 @Component({
   selector: 'app-stat-card',
@@ -24,11 +24,11 @@ export class StatCardComponent implements OnChanges {
   @Input() note = '';
   @Input() icon = '';
 
-  /** Promjena uz vrijednost. Boja prati smjer, ali strelica i predznak ga nose. */
+  /** The change beside the value. Colour follows direction, but the arrow and sign carry it. */
   @Input() delta: number | null = null;
   @Input() deltaText = '';
   @Input() deltaNote = '';
-  /** Za mjere gdje porast nije loš (npr. broj presjeka) — čip ostaje neutralan. */
+  /** For measures where a rise is not bad (e.g. snapshot count) — the chip stays neutral. */
   @Input() deltaNeutral = false;
 
   @Input() spark: number[] = [];

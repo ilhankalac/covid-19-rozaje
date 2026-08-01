@@ -13,7 +13,7 @@ import {
   withDerived,
 } from './core/stats';
 
-/** Preseti opsega. Mjere se od posljednjeg presjeka, ne od danas — baza je arhiva. */
+/** Range presets. Measured from the last snapshot, not today — the database is an archive. */
 export const RANGE_OPTIONS: RangeOption[] = [
   { id: '30', label: '30 dana', days: 30 },
   { id: '90', label: '90 dana', days: 90 },
@@ -30,21 +30,21 @@ const REPLAY_ONE = { bufferSize: 1, refCount: false };
 })
 export class DataService {
   /**
-   * Jedan zajednički tok podataka za cijelu aplikaciju. Ranije je svaka
-   * komponenta otvarala svoju pretplatu na isti čvor u bazi; shareReplay znači
-   * da se podaci povuku jednom i da svi prikazi gledaju identičan niz.
+   * One shared data stream for the whole application. Each component used to
+   * open its own subscription to the same database node; shareReplay means the
+   * data is fetched once and every view looks at an identical series.
    */
   readonly rows$: Observable<DailyStatRow[]>;
 
-  /** Ukupna slika — ne zavisi od izabranog perioda, hrani naslovni dio. */
+  /** The overall picture — independent of the selected period, feeds the hero section. */
   readonly overallSummary$: Observable<Summary>;
 
   readonly months$: Observable<Array<{ id: string; label: string }>>;
 
-  /** Izabrani period. Filter traka je jedina koja ga mijenja. */
+  /** The selected period. The filter bar is the only thing that changes it. */
   readonly selection$: Observable<string>;
 
-  /** Isječak koji vide sve kartice, grafikoni i tabela ispod filter trake. */
+  /** The slice seen by every card, chart and table below the filter bar. */
   readonly visibleRows$: Observable<DailyStatRow[]>;
 
   readonly summary$: Observable<Summary>;
@@ -86,7 +86,7 @@ export class DataService {
   }
 }
 
-/** Presetni id je broj dana; sve ostalo je id mjeseca oblika "2021-09". */
+/** A preset id is a day count; anything else is a month id shaped like "2021-09". */
 function applySelection(rows: DailyStatRow[], selection: string): DailyStatRow[] {
   const preset = RANGE_OPTIONS.find((option) => option.id === selection);
   if (preset) {

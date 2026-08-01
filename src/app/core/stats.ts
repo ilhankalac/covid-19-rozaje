@@ -8,13 +8,14 @@ import {
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-/** Prozor kliznog prosjeka, u broju presjeka. */
+/** Rolling-average window, counted in snapshots. */
 export const AVERAGE_WINDOW = 7;
 
 /**
- * Baza mješa tipove: rani zapisi su brojevi, kasniji stringovi, a od trenutka
- * kada je ijzcg.me prestao objavljivati oporavljene i umrle stoji "Nepoznato".
- * Sve što nije broj postaje null, da se nigdje ne prikaže kao 0.
+ * The database mixes types: early records are numbers, later ones strings, and
+ * from the point ijzcg.me stopped publishing recoveries and deaths the value
+ * reads "Nepoznato". Anything that is not a number becomes null, so it is
+ * never rendered as 0.
  */
 export function toNumber(value: number | string | undefined | null): number | null {
   if (value === null || value === undefined || value === '') {
@@ -24,7 +25,7 @@ export function toNumber(value: number | string | undefined | null): number | nu
   return Number.isFinite(parsed) ? parsed : null;
 }
 
-/** Parsira "08.09.2021." u lokalnu ponoć tog dana. */
+/** Parses "08.09.2021." into local midnight of that day. */
 export function parseDate(value: string | undefined): Date | null {
   if (!value) {
     return null;
@@ -45,10 +46,10 @@ function toIso(date: Date): string {
 }
 
 /**
- * Sređuje sirove zapise u niz na koji se može računati:
- * odbacuje zapise bez upotrebljivog datuma, spaja duplikate istog dana
- * (baza ih ima — zadržava se posljednji upisani) i sortira hronološki,
- * jer redoslijed Firebase ključeva ne prati datume.
+ * Turns raw records into a series that can be computed over: drops records
+ * without a usable date, merges duplicates of the same day (the database has
+ * them — the last one written wins) and sorts chronologically, because the
+ * order of Firebase keys does not follow the dates.
  */
 export function normalize(
   entries: Array<{ key: string; value: RawDailyStatistic }>
@@ -75,7 +76,7 @@ export function normalize(
   return Array.from(byDay.values()).sort((a, b) => a.iso.localeCompare(b.iso));
 }
 
-/** Klizni prosjek posljednjih `window` vrijednosti; null dok prozor nije pun. */
+/** Rolling average of the last `window` values; null until the window is full. */
 function movingAverage(values: Array<number | null>, window: number): Array<number | null> {
   return values.map((_, index) => {
     if (index < window - 1) {
@@ -95,15 +96,15 @@ export function daysBetween(from: Date, to: Date): number {
   return Math.round((to.getTime() - from.getTime()) / DAY_MS);
 }
 
-/** Dodaje promjenu, razmak u danima i klizni prosjek svakom presjeku. */
+/** Adds the change, the gap in days and the rolling average to every snapshot. */
 export function withDerived(stats: DailyStat[]): DailyStatRow[] {
   const averages = movingAverage(
     stats.map((stat) => stat.activeCases),
     AVERAGE_WINDOW
   );
 
-  // Posljednji viđeni kumulativni zbirovi, koji se prenose kroz presjeke u
-  // kojima izvor te podatke nije objavio.
+  // Last seen cumulative totals, carried through the snapshots in which the
+  // source did not publish them.
   let lastDeaths: number | null = null;
   let lastRecovered: number | null = null;
 
@@ -112,9 +113,9 @@ export function withDerived(stats: DailyStat[]): DailyStatRow[] {
     const hasChange =
       previous !== null && previous.activeCases !== null && stat.activeCases !== null;
 
-    // Tekući maksimum, ne posljednja vrijednost: tvrdnja je „najmanje N”, a
-    // izvor na par mjesta prijavi manji zbir nego ranije (npr. umrli 11 -> 10
-    // u avgustu 2020). Jednom prijavljenih 11 ostaje donja granica.
+    // Running maximum, not the last value: the claim is "at least N", and in a
+    // few places the source reports a smaller total than before (e.g. deaths
+    // 11 -> 10 in August 2020). Once 11 was reported, it stays the lower bound.
     if (stat.deaths !== null) {
       lastDeaths = lastDeaths === null ? stat.deaths : Math.max(lastDeaths, stat.deaths);
     }
@@ -136,7 +137,7 @@ export function withDerived(stats: DailyStat[]): DailyStatRow[] {
   });
 }
 
-/** Posljednji presjek na dan `target` ili raniji. */
+/** The last snapshot on `target` or earlier. */
 function rowAtOrBefore(rows: DailyStatRow[], target: Date): DailyStatRow | null {
   for (let index = rows.length - 1; index >= 0; index--) {
     if (rows[index].date.getTime() <= target.getTime()) {
@@ -180,7 +181,7 @@ function extremeBy(
   return best;
 }
 
-/** Sve brojke koje naslovni dio i kartice prikazuju, izračunate jednom. */
+/** Every figure the hero section and the cards display, computed once. */
 export function summarize(rows: DailyStatRow[]): Summary {
   const empty: Summary = {
     latest: null,
@@ -268,7 +269,7 @@ export function summarize(rows: DailyStatRow[]): Summary {
   };
 }
 
-/** Zadnjih `days` dana podataka, mjereno od posljednjeg presjeka. */
+/** The last `days` days of data, measured from the most recent snapshot. */
 export function sliceByDays(rows: DailyStatRow[], days: number | null): DailyStatRow[] {
   if (days === null || !rows.length) {
     return rows;
@@ -278,7 +279,7 @@ export function sliceByDays(rows: DailyStatRow[], days: number | null): DailySta
   return rows.filter((row) => row.date.getTime() >= cutoff);
 }
 
-/** Mjeseci koji imaju podatke, najnoviji prvi: [{ id: "2021-09", label: "septembar 2021." }] */
+/** Months that have data, newest first: [{ id: "2021-09", label: "septembar 2021." }] */
 const MONTH_NAMES = [
   'januar',
   'februar',
@@ -316,7 +317,7 @@ export function filterByMonth(rows: DailyStatRow[], monthId: string): DailyStatR
 }
 
 /* -------------------------------------------------------------------------
-   Formatiranje
+   Formatting
    ------------------------------------------------------------------------- */
 
 export function trendOf(value: number | null | undefined): Trend {
@@ -326,7 +327,7 @@ export function trendOf(value: number | null | undefined): Trend {
   return value > 0 ? 'up' : 'down';
 }
 
-/** Predznak se uvijek ispisuje — boja nikad nije jedini nosilac smjera. */
+/** The sign is always printed — colour is never the only carrier of direction. */
 export function formatSigned(value: number | null, digits = 0): string {
   if (value === null || value === undefined) {
     return '—';
@@ -354,7 +355,7 @@ export function formatLongDate(date: Date | null | undefined): string {
   return `${date.getDate()}. ${MONTH_NAMES[date.getMonth()]} ${date.getFullYear()}.`;
 }
 
-/** Padež uz broj dana: 1 dan, 2 dana, 5 dana. */
+/** Grammatical case for a day count: 1 dan, 2 dana, 5 dana. */
 export function dayWord(count: number): string {
   return Math.abs(count) === 1 ? 'dan' : 'dana';
 }

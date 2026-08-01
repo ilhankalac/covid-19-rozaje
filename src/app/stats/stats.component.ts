@@ -14,7 +14,7 @@ interface StatsView {
   hasRows: boolean;
 }
 
-/** Kartice za isječak koji je izabran u filter traci iznad. */
+/** Cards for the slice selected in the filter bar above. */
 @Component({
   selector: 'app-stats',
   templateUrl: './stats.component.html',
@@ -32,7 +32,7 @@ export class StatsComponent {
 
   constructor(private dataService: DataService) {}
 
-  /** "142 → 330" — pokazuje odakle dokle je period išao. */
+  /** "142 → 330" — shows where the period started and where it ended. */
   periodEndpoints(summary: Summary): string {
     if (!summary.first || !summary.latest) {
       return '';

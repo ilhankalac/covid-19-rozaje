@@ -1,5 +1,5 @@
-/* Zaglavlje — jedina zasićena površina na stranici. Podaci ispod su na
-   mirnoj podlozi, da grafikoni ostanu čitljivi. */
+/* The header — the only saturated surface on the page. The data below sits on
+   a calm background so the charts stay readable. */
 
 .hero {
   position: relative;
@@ -15,7 +15,7 @@
 }
 
 .hero::after {
-  /* Suptilna vinjeta da bijeli tekst nigdje ne sjedi na najsvjetlijoj crvenoj. */
+  /* A subtle vignette so white text never sits on the lightest red. */
   content: "";
   position: absolute;
   inset: 0;
@@ -27,9 +27,10 @@
   pointer-events: none;
 }
 
-/* Mapa Crne Gore sa pinom na Rožajama, desno u zaglavlju.
-   Slika je već čisto bijela kontura na stvarno providnoj podlozi i linije su
-   zadebljane da prežive smanjivanje — zato ovdje nema nikakvih filtera. */
+/* Map of Montenegro with a pin on Rožaje, to the right of the header.
+   The image is already a pure white outline on a genuinely transparent
+   background, and the lines are thickened to survive downscaling — which is
+   why there are no filters here. */
 .hero__map {
   position: absolute;
   right: 8px;
@@ -50,7 +51,7 @@
   padding-bottom: var(--gap-6);
 }
 
-/* --- Identitet ---------------------------------------------------------- */
+/* --- Identity ----------------------------------------------------------- */
 
 .hero__brand {
   display: flex;
@@ -117,10 +118,10 @@
   stroke: #ffffff;
 }
 
-/* --- Responzivno -------------------------------------------------------- */
+/* --- Responsive --------------------------------------------------------- */
 
 @media (max-width: 640px) {
-  /* Na uskom ekranu mapa stoji iza teksta, pa je nešto tiša nego na desktopu. */
+  /* On narrow screens the map sits behind the text, so it is quieter than on desktop. */
   .hero__map {
     right: -40px;
     height: 70%;

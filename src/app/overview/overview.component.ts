@@ -5,8 +5,8 @@ import { formatLongDate, formatNumber, formatSigned } from '../core/stats';
 import { DataService } from '../data.service';
 
 /**
- * Priča o cijelom periodu. Namjerno ne sluša filter traku — ovo su brojke
- * koje ne zavise od toga koji je isječak čitalac izabrao.
+ * The story of the whole period. Deliberately does not listen to the filter
+ * bar — these are figures that do not depend on which slice the reader picked.
  */
 @Component({
   selector: 'app-overview',
@@ -23,9 +23,9 @@ export class OverviewComponent {
   constructor(private dataService: DataService) {}
 
   /**
-   * Umrli i oporavljeni su zbirovi od početka praćenja, a ne dnevne brojke:
-   * 41 umrli je ukupno kroz osam mjeseci, uz porast od po jedan u 30 od 220
-   * presjeka. Napomena mora reći i „ukupno” i do kad zbir važi.
+   * Deaths and recoveries are totals since tracking began, not daily figures:
+   * 41 deaths is the total across eight months, rising by one in 30 of 220
+   * snapshots. The note has to say both "total" and how far the total holds.
    */
   cumulativeNote(summary: Summary, last: DailyStatRow | null): string {
     if (!last || !summary.first) {

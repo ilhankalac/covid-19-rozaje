@@ -45,7 +45,7 @@
 }
 
 .tile__value {
-  /* Proporcionalne cifre: ovo je samostalan broj, ne kolona. */
+  /* Proportional figures: this is a standalone number, not a column. */
   font-size: 2.125rem;
   font-weight: 600;
   line-height: 1.1;
@@ -81,9 +81,10 @@
   margin-top: var(--gap-2);
 }
 
-/* margin-top:auto gura sparkline na dno kartice, pa su sve kartice u redu
-   iste visine bez obzira na dužinu teksta iznad. Negativne margine je puštaju
-   do same ivice; kartica bez sparkline zadrži normalan donji padding. */
+/* margin-top:auto pushes the sparkline to the bottom of the card, so every card
+   in a row is the same height regardless of the text above it. Negative margins
+   let it reach the very edge; a card without a sparkline keeps its normal
+   bottom padding. */
 .tile__spark {
   display: block;
   width: calc(100% + var(--gap-4) * 2);

@@ -40,8 +40,8 @@
       "
     ></app-stat-card>
 
-    <!-- Umrli i oporavljeni su kumulativni zbirovi, ne dnevne brojke —
-         zato „ukupno” stoji u samoj oznaci, a ne tek u fusnoti. -->
+    <!-- Deaths and recoveries are cumulative totals, not daily figures — which
+         is why "ukupno" is in the label itself, not just in a footnote. -->
     <app-stat-card
       label="Umrli — ukupno"
       icon="favorite_border"
@@ -57,15 +57,10 @@
     ></app-stat-card>
   </div>
 
-  <!-- Napomena o arhivi stoji ovdje, uz brojke na koje se odnosi. -->
-  <div class="notice" role="note">
+  <div class="notice" role="note" >
     <mat-icon class="notice__icon" aria-hidden="true">inventory_2</mat-icon>
     <p class="notice__body">
-      Institut za javno zdravlje Crne Gore prestao je da objavljuje presjeke po
-      opštinama, pa se arhiva više ne dopunjava. Oporavljeni i umrli nedostaju
-      nakon {{ formatLongDate(summary.lastKnownRecovered?.date) }} i svuda su
-      prikazani kao „—”. Posljednji zabilježeni presjek je
-      {{ formatLongDate(summary.latest?.date) }} i nalazi se na vrhu tabele.
+      Institut za javno zdravlje Crne Gore prestao je da objavljuje presjeke po opštinama, pa se arhiva više ne dopunjava. Oporavljeni i umrli nedostaju nakon {{ formatLongDate(summary.lastKnownRecovered?.date) }} i svuda su prikazani kao „—”. Posljednji zabilježeni presjek je {{ formatLongDate(summary.latest?.date) }} i nalazi se na vrhu tabele.
     </p>
   </div>
 </section>

@@ -1,7 +1,7 @@
 /**
- * Canvas ne razumije CSS promjenljive, pa se tokeni pročitaju sa <html> i
- * proslijede Chart.js-u kao obične hex vrijednosti. Poziva se ponovo pri
- * svakoj promjeni teme.
+ * Canvas does not understand CSS variables, so the tokens are read off <html>
+ * and handed to Chart.js as plain hex values. Called again on every theme
+ * change.
  */
 export interface ChartTheme {
   up: string;
@@ -36,7 +36,7 @@ export function readChartTheme(): ChartTheme {
   };
 }
 
-/** Boja sa alfa kanalom iz hex zapisa (#rrggbb). */
+/** A colour with an alpha channel, from hex notation (#rrggbb). */
 export function alpha(hex: string, value: number): string {
   const clean = hex.replace('#', '');
   if (clean.length !== 6) {

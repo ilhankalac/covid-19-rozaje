@@ -4,9 +4,9 @@ import { formatLongDate } from '../core/stats';
 import { DataService } from '../data.service';
 
 /**
- * Zaglavlje nosi samo identitet i obuhvaćeni period. Namjerno bez istaknute
- * brojke: podaci se ne ažuriraju od 2021, pa bi svaka velika cifra ovdje
- * bila pročitana kao trenutno stanje.
+ * The header carries only identity and the period covered. Deliberately without
+ * a headline figure: the data has not been updated since 2021, so any large
+ * number here would be read as the current situation.
  */
 @Component({
   selector: 'app-header',
